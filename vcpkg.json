@@ -1,1 +1,12 @@
-{}
+{
+  "dependencies": [
+    "fmt",
+    "glfw3",
+    "glm",
+    "stb",
+    "vk-bootstrap",
+    "vulkan-headers",
+    "vulkan-memory-allocator",
+    "imgui"
+  ]
+}
