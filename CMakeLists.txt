@@ -9,9 +9,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
-#add_subdirectory(src)
-
-add_executable(varcher src/main.cpp)
-
-find_package(fmt CONFIG REQUIRED)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE fmt::fmt)
+add_subdirectory(src)
