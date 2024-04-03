@@ -8,7 +8,7 @@ find_package(glfw3 CONFIG)
 find_package(glm CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 find_package(imgui CONFIG)
-#find_package(nfd  CONFIG)
+find_package(unofficial-nativefiledialog CONFIG)
 
 add_executable(${CMAKE_PROJECT_NAME} ${LIB_SOURCES})
 
@@ -25,7 +25,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
         vk-bootstrap::vk-bootstrap
         glfw
         glm::glm
-        # unofficial-nativefiledialog
+        unofficial::nativefiledialog::nfd
 )
 
 add_dependencies(resource shader)

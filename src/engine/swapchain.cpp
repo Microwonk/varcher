@@ -3,7 +3,6 @@
 #include <VkBootstrap.h>
 #include <fmt/format.h>
 #include "engine/engine.h"
-#include <glfw/glfw3.h>
 
 void Swapchain::init(const std::shared_ptr<Engine>& engine)
 {

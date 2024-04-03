@@ -2,6 +2,7 @@
 #include <engine/engine.h>
 
 int main() {
+    fmt::print("Test");
     try {
         auto engine = std::make_shared<Engine>();
         engine->init();
