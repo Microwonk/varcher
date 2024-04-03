@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 
 project(varcher VERSION 0.0.1 LANGUAGES CXX)
 
@@ -9,4 +9,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
+add_subdirectory(shader)
+add_subdirectory(resource)
 add_subdirectory(src)
