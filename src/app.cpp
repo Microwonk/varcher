@@ -1,13 +1,14 @@
 #include <fmt/core.h>
 #include <engine/engine.h>
+#include "engine/demo/triangle_renderer.h"
 
-int main() {
-    fmt::print("Test");
+int run() {
     try {
         auto engine = std::make_shared<Engine>();
         engine->init();
 
-        // auto renderer = std::make_shared<MyRenderer>();
+        auto renderer = std::make_shared<TriangleRenderer>(engine);
+        engine->setRenderer(renderer);
 
         engine->run();
         engine->destroy();

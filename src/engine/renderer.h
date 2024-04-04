@@ -5,8 +5,8 @@
 #include <vulkan/vulkan.hpp>
 #include "util/resource_ring.h"
 #include "engine/resource.h"
-// #include "engine/pipeline/render_pass.hpp"
-// #include "engine/pipeline/framebuffer.hpp"
+#include "engine/pipeline/render_pass.h"
+#include "engine/pipeline/framebuffer.h"
 
 class Engine;
 
@@ -15,8 +15,8 @@ class Engine;
 class ARenderer : public AResource
 {
 protected:
-    // std::unique_ptr<RenderPass> _windowRenderPass;
-    // ResourceRing<Framebuffer> _windowFramebuffers;
+    std::unique_ptr<RenderPass> _windowRenderPass;
+    ResourceRing<Framebuffer> _windowFramebuffers;
 
 public:
     // Called to initialize the renderer.

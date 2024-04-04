@@ -27,9 +27,8 @@ void Engine::setRenderer(const std::shared_ptr<ARenderer>& _renderer)
 
 void Engine::run()
 {
-    // FIXME
-//    if (!_initialized)
-//        throw std::runtime_error("Cannot run engine before initializing.");
+    if (!_initialized)
+        throw std::runtime_error("Cannot run engine before initializing.");
 
     using TimePoint = std::chrono::steady_clock::time_point;
     TimePoint start = std::chrono::steady_clock::now();
@@ -40,8 +39,7 @@ void Engine::run()
     {
         start = std::chrono::steady_clock::now();
         glfwPollEvents();
-        // FIXME
-//        draw(delta);
+        draw(delta);
         end = std::chrono::steady_clock::now();
         delta = std::chrono::duration<float>(end - start).count();
     }
@@ -181,8 +179,7 @@ void Engine::initVulkan() {
     vk::DynamicLoader dl;
     getInstanceProcAddr = dl.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr");
     getDeviceProcAddr = dl.getProcAddress<PFN_vkGetDeviceProcAddr>("vkGetDeviceProcAddr");
-    // FIXME
-//    vk::getDispatchLoaderStatic().init(getInstanceProcAddr);
+    //VULKAN_HPP_DEFAULT_DISPATCHER.init(getInstanceProcAddr);
 
     bool debug = false;
 
@@ -203,7 +200,6 @@ void Engine::initVulkan() {
     }
     vkb::Instance vkbInstance = instanceResult.value();
     instance = vkbInstance.instance;
-    // FIXME
     // VULKAN_HPP_DEFAULT_DISPATCHER.init(instance);
     debugMessenger = vkbInstance.debug_messenger;
     deletionQueue.push_group([&]() {
@@ -250,7 +246,6 @@ void Engine::initVulkan() {
     }
     vkb::Device vkbDevice = deviceResult.value();
     device = vkbDevice.device;
-    // FIXME
     // VULKAN_HPP_DEFAULT_DISPATCHER.init(device);
     deletionQueue.push_group([&]() {
         device.destroy();

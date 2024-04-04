@@ -11,4 +11,5 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 add_subdirectory(shader)
 add_subdirectory(resource)
+add_subdirectory(app)
 add_subdirectory(src)

@@ -1,5 +1,11 @@
 {
-  "dependencies": [
+  "dependencies" : [ {
+    "name" : "imgui",
+    "features": [
+      "glfw-binding",
+      "vulkan-binding"
+    ]
+  },
     "fmt",
     "glfw3",
     "glm",
@@ -7,7 +13,6 @@
     "vk-bootstrap",
     "vulkan-headers",
     "vulkan-memory-allocator",
-    "imgui",
     "nativefiledialog"
   ]
 }

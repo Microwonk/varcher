@@ -1,5 +1,6 @@
 # Resource copying to build folder
 # Inspired by https://qrikko.blogspot.com/2016/05/cmake-and-how-to-copy-resources-during.html
+project(resource)
 
 # Get resource directories
 set(RES_SOURCE .)
@@ -34,4 +35,4 @@ foreach(source IN LISTS RESOURCE_FILES)
 endforeach()
 
 # Add resource target depending on all resources
-add_custom_target(resource ALL DEPENDS ${RESOURCE_OUTPUTS})
+add_custom_target(${PROJECT_NAME} ALL DEPENDS ${RESOURCE_OUTPUTS})

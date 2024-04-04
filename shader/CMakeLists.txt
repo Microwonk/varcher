@@ -1,5 +1,6 @@
 # Shader compilation to build folder
 # Inspired by https://stackoverflow.com/questions/57478571/why-wont-cmake-build-my-vulkan-spirv-shaders
+project(shader)
 
 # Get shader directories
 set(SHADER_SOURCE_DIR .)
@@ -50,4 +51,4 @@ foreach(source IN LISTS SHADER_SOURCES)
 endforeach()
 
 # Add shader target depending on all shaders
-add_custom_target(shader ALL DEPENDS ${SHADER_SPV})
+add_custom_target(${PROJECT_NAME} ALL DEPENDS ${SHADER_SPV})
