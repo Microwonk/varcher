@@ -17,6 +17,12 @@ add_library(${PROJECT_NAME} STATIC ${LIB_SOURCES})
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64" OR CMAKE_EXE_LINKER_FLAGS STREQUAL "/machine:x64")
+    set(FSR2_PLATFORM_NAME x64)
+elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32" OR CMAKE_EXE_LINKER_FLAGS STREQUAL "/machine:X86")
+    set(FSR2_PLATFORM_NAME x86)
+endif()
+
 #stb
 target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
 
@@ -26,6 +32,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         fmt::fmt
         vk-bootstrap::vk-bootstrap
         glfw
+        fsr2 # from prebuilt
+        voxel # from opengametools
+        ${Vulkan_LIBRARIES}
         glm::glm
         unofficial::nativefiledialog::nfd
         imgui::imgui

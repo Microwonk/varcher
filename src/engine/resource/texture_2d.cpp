@@ -2,8 +2,8 @@
 
 #include "engine/engine.h"
 #include "engine/resource/buffer.h"
-//#define STB_IMAGE_IMPLEMENTATION
-//#include <stb_image.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #include <fmt/format.h>
 
 static size_t formatSize(vk::Format format)
@@ -28,14 +28,14 @@ Texture2D::Texture2D(const std::shared_ptr<Engine>& engine,
     int iHeight;
     int iChannels;
     void* pixels;
-    //if (stbi_is_hdr(filepath.c_str()))
-    //{
-    //    pixels = stbi_loadf(filepath.c_str(), &iWidth, &iHeight, &iChannels, desiredChannels);
-    //}
-    //else
-    //{
-    //    pixels = stbi_load(filepath.c_str(), &iWidth, &iHeight, &iChannels, desiredChannels);
-    //}
+    if (stbi_is_hdr(filepath.c_str()))
+    {
+        pixels = stbi_loadf(filepath.c_str(), &iWidth, &iHeight, &iChannels, desiredChannels);
+    }
+    else
+    {
+        pixels = stbi_load(filepath.c_str(), &iWidth, &iHeight, &iChannels, desiredChannels);
+    }
 
     if (!pixels)
     {
@@ -54,7 +54,7 @@ Texture2D::Texture2D(const std::shared_ptr<Engine>& engine,
     // Copy data to buffer
     stagingBuffer.copyData(pixels, static_cast<size_t>(imageSize));
 
-    //stbi_image_free(pixels);
+    stbi_image_free(pixels);
 
     // Extents
     vk::Extent3D imageExtent;

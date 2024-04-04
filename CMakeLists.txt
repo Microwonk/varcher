@@ -9,6 +9,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
+#include prebuilt fsr from vendor
+add_subdirectory(vendor/fsr2)
+#include voxel subdirectory
+add_subdirectory(vendor/voxel)
+
 add_subdirectory(shader)
 add_subdirectory(resource)
 add_subdirectory(app)

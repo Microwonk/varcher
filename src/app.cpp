@@ -1,13 +1,15 @@
 #include <fmt/core.h>
 #include <engine/engine.h>
-#include "engine/demo/triangle_renderer.h"
+//#include "engine/triangle/triangle_renderer.h"
+#include "engine/voxels/voxel_renderer.h"
 
 int run() {
     try {
         auto engine = std::make_shared<Engine>();
         engine->init();
 
-        auto renderer = std::make_shared<TriangleRenderer>(engine);
+//        auto renderer = std::make_shared<TriangleRenderer>(engine);
+        auto renderer = std::make_shared<VoxelRenderer>(engine);
         engine->setRenderer(renderer);
 
         engine->run();

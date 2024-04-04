@@ -31,8 +31,8 @@ void Engine::run()
         throw std::runtime_error("Cannot run engine before initializing.");
 
     using TimePoint = std::chrono::steady_clock::time_point;
-    TimePoint start = std::chrono::steady_clock::now();
-    TimePoint end = start;
+    TimePoint start;
+    TimePoint end;
     float delta = 0;
 
     while (!glfwWindowShouldClose(window))
@@ -179,9 +179,8 @@ void Engine::initVulkan() {
     vk::DynamicLoader dl;
     getInstanceProcAddr = dl.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr");
     getDeviceProcAddr = dl.getProcAddress<PFN_vkGetDeviceProcAddr>("vkGetDeviceProcAddr");
-    //VULKAN_HPP_DEFAULT_DISPATCHER.init(getInstanceProcAddr);
 
-    bool debug = false;
+    bool debug = true;
 
     // Create Vulkan instance
     vkb::InstanceBuilder instanceBuilder;
@@ -200,7 +199,6 @@ void Engine::initVulkan() {
     }
     vkb::Instance vkbInstance = instanceResult.value();
     instance = vkbInstance.instance;
-    // VULKAN_HPP_DEFAULT_DISPATCHER.init(instance);
     debugMessenger = vkbInstance.debug_messenger;
     deletionQueue.push_group([&]() {
         vkb::destroy_debug_utils_messenger(instance, debugMessenger);
@@ -246,7 +244,6 @@ void Engine::initVulkan() {
     }
     vkb::Device vkbDevice = deviceResult.value();
     device = vkbDevice.device;
-    // VULKAN_HPP_DEFAULT_DISPATCHER.init(device);
     deletionQueue.push_group([&]() {
         device.destroy();
     });
