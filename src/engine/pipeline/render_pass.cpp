@@ -27,7 +27,7 @@ RenderPassBuilder& RenderPassBuilder::color(uint32_t attachment, vk::Format form
     colorAttachment.stencilLoadOp = vk::AttachmentLoadOp::eDontCare;
     colorAttachment.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
     colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-    colorAttachment.finalLayout = vk::ImageLayout::eColorAttachmentOptimal;
+    colorAttachment.finalLayout = vk::ImageLayout::ePresentSrcKHR;
 
     vk::AttachmentReference colorAttachmentRef;
     colorAttachmentRef.attachment = attachment;

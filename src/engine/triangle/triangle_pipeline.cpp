@@ -22,7 +22,7 @@ std::vector<vk::PipelineShaderStageCreateInfo> TrianglePipeline::buildShaderStag
 
 vk::PipelineVertexInputStateCreateInfo TrianglePipeline::buildVertexInputInfo()
 {
-    // No inputs needed for the triangle triangle
+    // No inputs needed for the debug triangle
     vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
     vertexInputInfo.vertexAttributeDescriptionCount = 0;
     vertexInputInfo.vertexAttributeDescriptionCount = 0;

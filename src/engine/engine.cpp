@@ -114,8 +114,12 @@ void Engine::draw(float delta)
     presentInfo.pWaitSemaphores = &renderSemaphore;
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pImageIndices = &imageIndex;
-    res = graphicsQueue.presentKHR(presentInfo);
-    vk::resultCheck(res, "Error presenting");
+    try {
+        res = graphicsQueue.presentKHR(presentInfo);
+        vk::resultCheck(res, "Error presenting");
+    } catch (std::exception &e) {
+        fmt::println("{}", e.what());
+    }
 
     _frameCount++;
 }
@@ -185,7 +189,7 @@ void Engine::initVulkan() {
     // Create Vulkan instance
     vkb::InstanceBuilder instanceBuilder;
     instanceBuilder = instanceBuilder
-            .set_app_name("Voxel Engine")
+            .set_app_name("Engine")
             .require_api_version(1, 2, 0);
     if (debug) {
         instanceBuilder = instanceBuilder

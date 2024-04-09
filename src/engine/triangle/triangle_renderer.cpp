@@ -23,8 +23,7 @@ void TriangleRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, ui
     // Start main renderpass
     vk::RenderPassBeginInfo renderpassInfo;
     renderpassInfo.renderPass = _windowRenderPass->renderPass;
-    renderpassInfo.renderArea.offset = 0;
-    renderpassInfo.renderArea.offset = 0;
+    renderpassInfo.renderArea.offset = vk::Offset2D(0, 0);
     renderpassInfo.renderArea.extent = vk::Extent2D(engine->windowSize.x, engine->windowSize.y);
     renderpassInfo.framebuffer = _windowFramebuffers[swapchainImage].framebuffer;
     renderpassInfo.clearValueCount = 1;
