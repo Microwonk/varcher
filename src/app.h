@@ -6,8 +6,19 @@ enum Type : char {
     GALAXY = 'G',
 };
 
+const auto types = {
+    TRIANGLE,
+    VOXEL,
+    GALAXY
+};
+
 inline auto fromArchetype(char archetype) -> Type {
-    return static_cast<Type>(archetype);
+    for (const Type type: types) {
+        if (static_cast<char>(type) == archetype) {
+            return type;
+        }
+    }
+    throw std::invalid_argument("Invalid archetype character");
 }
 
 auto run(Type rendererType) -> int;
