@@ -17,7 +17,6 @@ VoxelRenderer::VoxelRenderer(const std::shared_ptr<Engine>& engine) : ARenderer(
     _scene = std::make_shared<VoxelScene>(engine, _settings->voxPath, _settings->skyboxPath);
 
     _geometryStage = std::make_unique<GeometryStage>(engine, _settings, _scene, _noiseTexture);
-    _denoiserStage = std::make_unique<DenoiserStage>(engine, _settings);
 #ifdef _WIN32
     _upscalerStage = std::make_unique<UpscalerStage>(engine, _settings);
 #endif
@@ -82,16 +81,15 @@ void VoxelRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uint3
 
     const GeometryBuffer& gBuffer = _geometryStage->record(commandBuffer, flightFrame);
 
-    const RenderImage& denoisedColor = _settings->denoiserSettings.enable ? _denoiserStage->record(commandBuffer, flightFrame,
-        gBuffer.color, gBuffer.normal, gBuffer.position) : gBuffer.color.get();
+    const RenderImage& color = gBuffer.color.get();
 
 #ifdef _WIN32
     const RenderImage& upscaled = _settings->fsrSetttings.enable ? _upscalerStage->record(commandBuffer,
-        denoisedColor, gBuffer.depth, gBuffer.motion, gBuffer.mask) : denoisedColor;
+        color, gBuffer.depth, gBuffer.motion, gBuffer.mask) : denoisedColor;
 
     _blitStage->record(commandBuffer, flightFrame, upscaled, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer& cmd) {_imguiRenderer->draw(cmd);});
 #else
-    _blitStage->record(commandBuffer, flightFrame, denoisedColor, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer &cmd) {_imguiRenderer->draw(cmd);});
+    _blitStage->record(commandBuffer, flightFrame, color, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer &cmd) {_imguiRenderer->draw(cmd);});
 #endif
     cmdutil::imageMemoryBarrier(
         commandBuffer,

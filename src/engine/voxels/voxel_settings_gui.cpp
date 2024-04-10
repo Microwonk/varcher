@@ -38,7 +38,12 @@ static std::string scalingName(FsrScaling scaling)
 const std::vector<glm::uvec2> resolutionOptions = {
     glm::uvec2(3840, 2160),
     glm::uvec2(2560, 1440),
-    glm::uvec2(1920, 1080)
+    glm::uvec2(1920, 1080),
+    glm::uvec2(1280, 720),
+    glm::uvec2(854, 480),
+    glm::uvec2(640, 360),
+    glm::uvec2(430, 240),
+    glm::uvec2(256, 144)
 };
 
 static std::string resolutionName(glm::uvec2 resolution)
@@ -70,45 +75,30 @@ RecreationEventFlags VoxelSettingsGui::draw(const std::shared_ptr<VoxelRenderSet
             }
             ImGui::EndCombo();
         }
-
-        if (ImGui::Checkbox("Enable FSR", &settings->fsrSetttings.enable))
+#ifdef _WIN32
+        if (ImGui::Checkbox("Enable FSR", &settings->fsrSettings.enable))
         {
             flags |= RecreationEventFlags::RENDER_RESIZE;
         }
 
-        if (ImGui::BeginCombo("FSR Quality", scalingName(settings->fsrSetttings.scaling).c_str()))
+        if (ImGui::BeginCombo("FSR Quality", scalingName(settings->fsrSettings.scaling).c_str()))
         {
             for (const FsrScaling scaling: scalingOptions)
             {
-                if (ImGui::Selectable(scalingName(scaling).c_str(), settings->fsrSetttings.scaling == scaling))
+                if (ImGui::Selectable(scalingName(scaling).c_str(), settings->fsrSettings.scaling == scaling))
                 {
-                    settings->fsrSetttings.scaling = scaling;
+                    settings->fsrSettings.scaling = scaling;
                     flags |= RecreationEventFlags::RENDER_RESIZE;
                 }
 
-                if (settings->fsrSetttings.scaling == scaling)
+                if (settings->fsrSettings.scaling == scaling)
                     ImGui::SetItemDefaultFocus();
             }
             ImGui::EndCombo();
         }
+#endif
     }
 
-    if (ImGui::CollapsingHeader("Denoiser", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        ImGui::Checkbox("Enable Denoiser", &settings->denoiserSettings.enable);
-
-        ImGui::SliderInt("Denoiser Iterations", &settings->denoiserSettings.iterations, 1, 10);
-
-        bool denoiserParamsChanged = false;
-        denoiserParamsChanged |= ImGui::SliderFloat("Phi Color", &settings->denoiserSettings.phiColor0, 0.0f, 100.0f, "%.6f");
-        denoiserParamsChanged |= ImGui::SliderFloat("Phi Normal", &settings->denoiserSettings.phiNormal0, 0.0f, 0.5f, "%.6f");
-        denoiserParamsChanged |= ImGui::SliderFloat("Phi Position", &settings->denoiserSettings.phiPos0, 0.0f, 0.5f, "%.6f");
-        denoiserParamsChanged |= ImGui::SliderFloat("Step Width", &settings->denoiserSettings.stepWidth, 0.0f, 5.0f, "%.6f");
-        if (denoiserParamsChanged)
-        {
-            flags |= RecreationEventFlags::DENOISER_SETTINGS;
-        }
-    }
 
     if (ImGui::CollapsingHeader("Ambient Occlusion", ImGuiTreeNodeFlags_DefaultOpen))
     {

@@ -7,7 +7,6 @@
 
 #include "engine/resource/texture_2d.h"
 #include "engine/voxels/stages/geometry_stage.h"
-#include "engine/voxels/stages/denoiser_stage.h"
 #ifdef _WIN32
 #include "engine/voxels/stages/upscaler_stage.h"
 #endif
@@ -25,7 +24,6 @@ private:
     std::shared_ptr<Texture2D> _noiseTexture;
 
     std::unique_ptr<GeometryStage> _geometryStage;
-    std::unique_ptr<DenoiserStage> _denoiserStage;
 #ifdef _WIN32
     std::unique_ptr<UpscalerStage> _upscalerStage;
 #endif

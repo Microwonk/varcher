@@ -7,7 +7,9 @@ static uint32_t scale(FsrScaling scaling, uint32_t dim)
 
 glm::uvec2 VoxelRenderSettings::renderResolution() const
 {
-    if (fsrSetttings.enable)
-        return glm::uvec2(scale(fsrSetttings.scaling, targetResolution.x), scale(fsrSetttings.scaling, targetResolution.y));
+#ifdef _WIN32
+    if (fsrSettings.enable)
+        return glm::uvec2(scale(fsrSettings.scaling, targetResolution.x), scale(fsrSettings.scaling, targetResolution.y));
+#endif
     return targetResolution;
 }
