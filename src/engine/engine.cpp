@@ -116,13 +116,12 @@ void Engine::draw(float delta)
     presentInfo.pWaitSemaphores = &renderSemaphore;
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pImageIndices = &imageIndex;
-    try {
-        res = graphicsQueue.presentKHR(presentInfo);
-        vk::resultCheck(res, "Error presenting");
-    } catch (std::exception &e) {
-        fmt::println("{}", e.what());
-    }
 
+    res = graphicsQueue.presentKHR(presentInfo);
+    // this makes linux build crash, idk why it has SuboptimalKHR here
+#ifdef _WIN32
+    vk::resultCheck(res, "Error presenting");
+#endif
     _frameCount++;
 }
 

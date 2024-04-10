@@ -2,7 +2,7 @@
 
 #include "engine/engine.h"
 #include "engine/resource/shader_module.h"
-#include "engine/voxels/resource/screen_quad_push.h"
+#include "renderers/voxel/resource/screen_quad_push.h"
 
 BlitPipeline BlitPipeline::build(const std::shared_ptr<Engine>& engine, const vk::RenderPass& pass)
 {

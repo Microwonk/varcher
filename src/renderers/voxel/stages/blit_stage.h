@@ -1,14 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "engine/voxels/voxel_render_stage.h"
-#include "engine/voxels/resource/parameters.h"
+#include "renderers/voxel/voxel_render_stage.h"
+#include "renderers/voxel/resource/parameters.h"
 
 #include "engine/resource/buffer.h"
 #include "engine/pipeline/render_pass.h"
 #include "engine/resource/render_image.h"
 #include "engine/pipeline/framebuffer.h"
-#include "engine/voxels/pipeline/blit_pipeline.h"
+#include "renderers/voxel/pipeline/blit_pipeline.h"
 
 class BlitStage : public AVoxelRenderStage
 {

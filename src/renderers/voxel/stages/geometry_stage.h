@@ -3,18 +3,18 @@
 #include <memory>
 #include <array>
 #include <vulkan/vulkan.hpp>
-#include "engine/voxels/voxel_render_stage.h"
+#include "renderers/voxel/voxel_render_stage.h"
 #include "engine/util/resource_ring.h"
-#include "engine/voxels/resource/parameters.h"
+#include "renderers/voxel/resource/parameters.h"
 
 #include "engine/resource/buffer.h"
 #include "engine/resource/render_image.h"
 #include "engine/pipeline/render_pass.h"
 #include "engine/pipeline/framebuffer.h"
-#include "engine/voxels/pipeline/voxel_sdf_pipeline.h"
-#include "engine/voxels/resource/voxel_scene.h"
+#include "renderers/voxel/pipeline/voxel_sdf_pipeline.h"
+#include "renderers/voxel/resource/voxel_scene.h"
 #include "engine/resource/texture_2d.h"
-#include "engine/voxels/voxel_render_settings.h"
+#include "renderers/voxel/voxel_render_settings.h"
 
 struct GeometryBuffer
 {

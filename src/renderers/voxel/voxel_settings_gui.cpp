@@ -5,7 +5,7 @@
 #include <imgui_stdlib.h>
 #include <fmt/format.h>
 #include <nfd.h>
-#include "engine/voxels/voxel_renderer.h"
+#include "voxel_renderer.h"
 #include <filesystem>
 
 const std::vector<FsrScaling> scalingOptions = {

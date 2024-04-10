@@ -3,7 +3,7 @@
 #include "engine/engine.h"
 #include "voxel_settings_gui.h"
 #include "engine/commands/command_util.h"
-#include "engine/voxels/resource/screen_quad_push.h"
+#include "renderers/voxel/resource/screen_quad_push.h"
 #include "engine/resource/render_image.h"
 #include "voxel_performance_gui.h"
 

@@ -1,16 +1,16 @@
 #include "engine/renderer.h"
 
 #include <optional>
-#include "engine/voxels/resource/camera_controller.h"
-#include "engine/voxels/resource/voxel_scene.h"
+#include "renderers/voxel/resource/camera_controller.h"
+#include "renderers/voxel/resource/voxel_scene.h"
 #include "voxel_render_settings.h"
 
 #include "engine/resource/texture_2d.h"
-#include "engine/voxels/stages/geometry_stage.h"
+#include "renderers/voxel/stages/geometry_stage.h"
 #ifdef _WIN32
 #include "engine/voxels/stages/upscaler_stage.h"
 #endif
-#include "engine/voxels/stages/blit_stage.h"
+#include "renderers/voxel/stages/blit_stage.h"
 #include "engine/gui/imgui_renderer.h"
 
 class VoxelRenderer : public ARenderer

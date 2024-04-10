@@ -5,7 +5,7 @@
 #include "engine/resource/shader_module.h"
 #include "engine/pipeline/descriptor_set.h"
 #include <glm/glm.hpp>
-#include "engine/voxels/resource/parameters.h"
+#include "renderers/voxel/resource/parameters.h"
 
 class BlitPipeline : public APipeline
 {
