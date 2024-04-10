@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #pragma once
 
 #include <glm/glm.hpp>
@@ -34,3 +35,4 @@ public:
 private:
     FfxResource wrapRenderImage(const RenderImage& image);
 };
+#endif

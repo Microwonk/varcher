@@ -14,13 +14,13 @@ enum class FsrScaling : uint32_t
 
 struct FsrSettings
 {
-    bool enable = true;
+    bool enable = false;
     FsrScaling scaling = FsrScaling::BALANCED;
 };
 
 struct DenoiserSettings
 {
-    bool enable = true;
+    bool enable = false;
     int iterations = 2;
     float phiColor0 = 20.4f;
     float phiNormal0 = 1E-2f;
@@ -30,7 +30,7 @@ struct DenoiserSettings
 
 struct AmbientOcclusionSettings
 {
-    int numSamples = 4;
+    int numSamples = 0;
     float intensity = 1.0f;
 };
 

@@ -2,12 +2,6 @@
 
 #include "engine/engine.h"
 #include "voxel_settings_gui.h"
-#include "engine/gui/imgui_renderer.h"
-#include "engine/resource/texture_2d.h"
-#include "engine/voxels/stages/geometry_stage.h"
-#include "engine/voxels/stages/denoiser_stage.h"
-#include "engine/voxels/stages/upscaler_stage.h"
-#include "engine/voxels/stages/blit_stage.h"
 #include "engine/commands/command_util.h"
 #include "engine/voxels/resource/screen_quad_push.h"
 #include "engine/resource/render_image.h"
@@ -24,7 +18,9 @@ VoxelRenderer::VoxelRenderer(const std::shared_ptr<Engine>& engine) : ARenderer(
 
     _geometryStage = std::make_unique<GeometryStage>(engine, _settings, _scene, _noiseTexture);
     _denoiserStage = std::make_unique<DenoiserStage>(engine, _settings);
+#ifdef _WIN32
     _upscalerStage = std::make_unique<UpscalerStage>(engine, _settings);
+#endif
     _blitStage = std::make_unique<BlitStage>(engine, _settings, *_windowRenderPass);
 
     _imguiRenderer = std::make_unique<ImguiRenderer>(engine, _windowRenderPass->renderPass);
@@ -36,8 +32,9 @@ void VoxelRenderer::update(float delta)
 
     _camera->update(delta);
 
+#ifdef _WIN32
     _upscalerStage->update(delta);
-
+#endif
     _imguiRenderer->beginFrame();
     RecreationEventFlags flags = VoxelSettingsGui::draw(_settings);
     VoxelPerformanceGui::draw(delta);
@@ -76,10 +73,11 @@ void VoxelRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uint3
     constants.camDir = glm::vec4(_camera->direction, 0);
     constants.camUp = glm::vec4(_camera->up, 0);
     constants.camRight = glm::vec4(_camera->right, 0);
+#ifdef _WIN32
     constants.frame = glm::uvec1(_upscalerStage->frameCount);
     constants.cameraJitter.x = _upscalerStage->jitterX;
     constants.cameraJitter.y = _upscalerStage->jitterY;
-
+#endif
     commandBuffer.pushConstants(_geometryStage->getPipelineLayout(), vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment, 0, sizeof(ScreenQuadPush), &constants);
 
     const GeometryBuffer& gBuffer = _geometryStage->record(commandBuffer, flightFrame);
@@ -87,11 +85,14 @@ void VoxelRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uint3
     const RenderImage& denoisedColor = _settings->denoiserSettings.enable ? _denoiserStage->record(commandBuffer, flightFrame,
         gBuffer.color, gBuffer.normal, gBuffer.position) : gBuffer.color.get();
 
+#ifdef _WIN32
     const RenderImage& upscaled = _settings->fsrSetttings.enable ? _upscalerStage->record(commandBuffer,
         denoisedColor, gBuffer.depth, gBuffer.motion, gBuffer.mask) : denoisedColor;
 
     _blitStage->record(commandBuffer, flightFrame, upscaled, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer& cmd) {_imguiRenderer->draw(cmd);});
-
+#else
+    _blitStage->record(commandBuffer, flightFrame, denoisedColor, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer &cmd) {_imguiRenderer->draw(cmd);});
+#endif
     cmdutil::imageMemoryBarrier(
         commandBuffer,
         engine->swapchain.images[swapchainImage],

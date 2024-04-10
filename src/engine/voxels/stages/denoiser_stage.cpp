@@ -2,13 +2,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/functions.hpp>
-#include "engine/resource/buffer.h"
 #include "engine/commands/command_util.h"
-#include "engine/pipeline/descriptor_set.h"
-#include "engine/pipeline/render_pass.h"
-#include "engine/voxels/pipeline/denoiser_pipeline.h"
-#include "engine/resource/render_image.h"
-#include "engine/pipeline/framebuffer.h"
 #include "engine/engine.h"
 
 struct DenoiserParams

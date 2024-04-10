@@ -1,12 +1,7 @@
 #include "blit_stage.h"
 
-#include "engine/resource/buffer.h"
-#include "engine/voxels/pipeline/blit_pipeline.h"
 #include "engine/engine.h"
-#include "engine/pipeline/framebuffer.h"
 #include "engine/commands/command_util.h"
-#include "engine/pipeline/render_pass.h"
-#include "engine/resource/render_image.h"
 
 BlitStage::BlitStage(const std::shared_ptr<Engine>& engine, const std::shared_ptr<VoxelRenderSettings>& settings, const RenderPass& renderPass) : AVoxelRenderStage(engine, settings)
 {

@@ -25,7 +25,7 @@ protected:
 
 public:
     // Returns a pointer to the next descriptor set for a given frame.
-    const vk::DescriptorSet* getSet(uint32_t frame) const;
+    [[nodiscard]] const vk::DescriptorSet* getSet(uint32_t frame) const;
 
     // Writes buffer data to the descriptor set for the given frame.
     void writeBuffer(uint32_t binding, uint32_t frame,

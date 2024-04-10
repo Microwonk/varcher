@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #include "upscaler_stage.h"
 
 #include <vk/ffx_fsr2_vk.h>
@@ -170,3 +171,4 @@ const RenderImage& UpscalerStage::record(const vk::CommandBuffer& cmd,
 
     return *_target;
 }
+#endif

@@ -32,13 +32,16 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         fmt::fmt
         vk-bootstrap::vk-bootstrap
         glfw
-        fsr2 # from prebuilt
         voxel # from opengametools
         ${Vulkan_LIBRARIES}
         glm::glm
         unofficial::nativefiledialog::nfd
         imgui::imgui
 )
+
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE fsr2) # from prebuilt only on windows
+endif ()
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE

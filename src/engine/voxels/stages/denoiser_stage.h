@@ -10,13 +10,12 @@
 #define DENOISER_KERNEL_RADIUS 1
 #define DENOISER_KERNEL_SIZE ((DENOISER_KERNEL_RADIUS + DENOISER_KERNEL_RADIUS + 1) * (DENOISER_KERNEL_RADIUS + DENOISER_KERNEL_RADIUS + 1))
 
-class VoxelRenderSettings;
-class DenoiserPipeline;
-class Buffer;
-class DescriptorSet;
-class RenderImage;
-class RenderPass;
-class Framebuffer;
+#include "engine/resource/buffer.h"
+#include "engine/pipeline/descriptor_set.h"
+#include "engine/pipeline/render_pass.h"
+#include "engine/voxels/pipeline/denoiser_pipeline.h"
+#include "engine/resource/render_image.h"
+#include "engine/pipeline/framebuffer.h"
 
 class DenoiserStage : public AVoxelRenderStage
 {
@@ -42,6 +41,6 @@ public:
 
     void updateParameters() const;
 
-    const RenderImage& record(const vk::CommandBuffer& cmd, uint32_t flightFrame,
+    [[nodiscard]] const RenderImage& record(const vk::CommandBuffer& cmd, uint32_t flightFrame,
                               const RenderImage& colorInput, const RenderImage& normalInput, const RenderImage& posInput) const;
 };

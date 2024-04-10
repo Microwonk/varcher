@@ -9,6 +9,8 @@
 #include <chrono>
 #include "engine/renderer.h"
 
+#define VULKAN_DEBUG false
+
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
 void Engine::init()
@@ -184,19 +186,19 @@ void Engine::initVulkan() {
     getInstanceProcAddr = dl.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr");
     getDeviceProcAddr = dl.getProcAddress<PFN_vkGetDeviceProcAddr>("vkGetDeviceProcAddr");
 
-    bool debug = true;
-
     // Create Vulkan instance
     vkb::InstanceBuilder instanceBuilder;
     instanceBuilder = instanceBuilder
             .set_app_name("Engine")
             .require_api_version(1, 2, 0);
-    if (debug) {
+
+    if (VULKAN_DEBUG) {
         instanceBuilder = instanceBuilder
                 .request_validation_layers(true)
                 .use_default_debug_messenger()
                 .enable_extension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
+
     auto instanceResult = instanceBuilder.build();
     if (!instanceResult) {
         throw std::runtime_error(fmt::format("Failed to create Vulkan instance. Error: {}", instanceResult.error().message()));

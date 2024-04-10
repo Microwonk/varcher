@@ -1,14 +1,6 @@
 #include "geometry_stage.h"
 
-#include "engine/resource/buffer.h"
-#include "engine/resource/render_image.h"
-#include "engine/pipeline/render_pass.h"
 #include "engine/engine.h"
-#include "engine/voxels/voxel_render_settings.h"
-#include "engine/pipeline/framebuffer.h"
-#include "engine/voxels/pipeline/voxel_sdf_pipeline.h"
-#include "engine/voxels/resource/voxel_scene.h"
-#include "engine/resource/texture_2d.h"
 #include "engine/commands/command_util.h"
 
 GeometryStage::GeometryStage(const std::shared_ptr<Engine>& engine, const std::shared_ptr<VoxelRenderSettings>& settings, const std::shared_ptr<VoxelScene>& scene, const std::shared_ptr<Texture2D>& noise) : AVoxelRenderStage(engine, settings), _scene(scene)

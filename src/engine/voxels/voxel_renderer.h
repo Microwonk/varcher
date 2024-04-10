@@ -5,12 +5,14 @@
 #include "engine/voxels/resource/voxel_scene.h"
 #include "voxel_render_settings.h"
 
-class GeometryStage;
-class BlitStage;
-class DenoiserStage;
-class UpscalerStage;
-class ImguiRenderer;
-class Texture2D;
+#include "engine/resource/texture_2d.h"
+#include "engine/voxels/stages/geometry_stage.h"
+#include "engine/voxels/stages/denoiser_stage.h"
+#ifdef _WIN32
+#include "engine/voxels/stages/upscaler_stage.h"
+#endif
+#include "engine/voxels/stages/blit_stage.h"
+#include "engine/gui/imgui_renderer.h"
 
 class VoxelRenderer : public ARenderer
 {
@@ -24,7 +26,9 @@ private:
 
     std::unique_ptr<GeometryStage> _geometryStage;
     std::unique_ptr<DenoiserStage> _denoiserStage;
+#ifdef _WIN32
     std::unique_ptr<UpscalerStage> _upscalerStage;
+#endif
     std::unique_ptr<BlitStage> _blitStage;
 
     std::unique_ptr<ImguiRenderer> _imguiRenderer;
