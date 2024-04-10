@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.hpp>
 #include <ffx_fsr2.h>
-#include "engine/voxels/voxel_render_stage.h"
+#include "renderers/voxel/voxel_render_stage.h"
 
 class RenderImage;
 

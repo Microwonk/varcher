@@ -84,8 +84,8 @@ void VoxelRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uint3
     const RenderImage& color = gBuffer.color.get();
 
 #ifdef _WIN32
-    const RenderImage& upscaled = _settings->fsrSetttings.enable ? _upscalerStage->record(commandBuffer,
-        color, gBuffer.depth, gBuffer.motion, gBuffer.mask) : denoisedColor;
+    const RenderImage& upscaled = _settings->fsrSettings.enable ? _upscalerStage->record(commandBuffer,
+        color, gBuffer.depth, gBuffer.motion, gBuffer.mask) : color;
 
     _blitStage->record(commandBuffer, flightFrame, upscaled, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer& cmd) {_imguiRenderer->draw(cmd);});
 #else

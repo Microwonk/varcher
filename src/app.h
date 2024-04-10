@@ -21,4 +21,12 @@ inline auto fromArchetype(char archetype) -> Type {
     throw std::invalid_argument("Invalid archetype character");
 }
 
+static inline auto getArchetypes() -> std::vector<char> {
+    std::vector<char> archetypes;
+    for (const Type type: types) {
+        archetypes.push_back(static_cast<char>(type));
+    }
+    return archetypes;
+}
+
 auto run(Type rendererType) -> int;

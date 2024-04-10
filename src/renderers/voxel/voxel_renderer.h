@@ -8,7 +8,7 @@
 #include "engine/resource/texture_2d.h"
 #include "renderers/voxel/stages/geometry_stage.h"
 #ifdef _WIN32
-#include "engine/voxels/stages/upscaler_stage.h"
+#include "renderers/voxel/stages/upscaler_stage.h"
 #endif
 #include "renderers/voxel/stages/blit_stage.h"
 #include "engine/gui/imgui_renderer.h"

@@ -18,7 +18,7 @@ protected:
 
 public:
     // Creates a new resource.
-    AResource(const std::shared_ptr<Engine>& engine);
+    explicit AResource(const std::shared_ptr<Engine>& engine);
 
     // Pushes a deletor to this resource's group, which includes a local pointer to the engine.
     // This wrapper is necessary so we don't lose the reference to the engine.
