@@ -2,6 +2,7 @@
 
 #include "engine/engine.h"
 #include "engine/resource/buffer.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <fmt/format.h>

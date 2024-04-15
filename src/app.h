@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 enum Type : char {
     TRIANGLE = 'T',
     VOXEL = 'V',

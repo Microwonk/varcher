@@ -8,7 +8,8 @@ Now a Vulkan learning environment, aiming to provide small examples from Ray Tra
 
 - vcpkg to manage dependencies.
 - CMake + Ninja
-- GCC / CLANG / MINGW / MSVC (Should work on Windows and Linux)
+- CLANG / MSVC tested (Should work on Linux and Windows)
+- GCC does not compile successfully
 
 ### Linux
 You need to set a variable called VCPKG_ROOT (root of your vcpkg) for the build to work on linux with the default cmake preset.
