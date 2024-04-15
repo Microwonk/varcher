@@ -1,6 +1,7 @@
 #include "engine/renderer.h"
 
 #include <optional>
+#include <renderers/common/performance_settings.h>
 #include "renderers/voxel/resource/camera_controller.h"
 #include "renderers/voxel/resource/voxel_scene.h"
 #include "voxel_render_settings.h"
@@ -18,7 +19,8 @@ class VoxelRenderer : public ARenderer
 private:
     std::unique_ptr<CameraController> _camera;
 
-    std::shared_ptr<VoxelRenderSettings> _settings;
+    std::shared_ptr<VoxelRenderSettings> _v_settings;
+    std::shared_ptr<PerformanceSettings> _p_settings;
 
     std::shared_ptr<VoxelScene> _scene;
     std::shared_ptr<Texture2D> _noiseTexture;

@@ -9,7 +9,7 @@
 #include <chrono>
 #include "engine/renderer.h"
 
-#define VULKAN_DEBUG false
+#define VULKAN_DEBUG true
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
@@ -64,11 +64,13 @@ void Engine::draw(float delta)
 
     // Request image from swapchain
     vk::ResultValue<uint32_t> imageIndexResult = device.acquireNextImageKHR(swapchain.swapchain, 1000000000, presentSemaphore);
-    if (imageIndexResult.result == vk::Result::eErrorOutOfDateKHR || windowResized)
+    if (imageIndexResult.result == vk::Result::eErrorOutOfDateKHR || windowResized || presentModeChanged)
     {
         resize();
+        presentModeChanged = false;
         return;
     }
+
     else if (imageIndexResult.result != vk::Result::eSuccess && imageIndexResult.result != vk::Result::eSuboptimalKHR)
     {
         vk::detail::throwResultException(imageIndexResult.result, "Failed to acquire swapchain image");
@@ -373,4 +375,9 @@ void Engine::upload_submit(const std::function<void(const vk::CommandBuffer& cmd
 
     device.waitIdle();
     device.resetCommandPool(uploadCommandPool);
+}
+
+void Engine::updatePresentMode(VkPresentModeKHR mode) {
+    presentModeChanged = true;
+    presentMode = mode;
 }

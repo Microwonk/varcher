@@ -9,6 +9,7 @@ static auto makeRenderer(Type type, const std::shared_ptr<Engine>& engine) -> st
         case TRIANGLE: return std::make_shared<TriangleRenderer>(engine);
         case VOXEL: return std::make_shared<VoxelRenderer>(engine);
         case GALAXY: return nullptr;
+        default: return std::make_shared<TriangleRenderer>(engine);
     }
 }
 

@@ -13,7 +13,7 @@ void Swapchain::init(const std::shared_ptr<Engine>& engine)
         auto swapchainResult = swapchainBuilder
                 .use_default_format_selection()
                 .add_image_usage_flags(VkImageUsageFlagBits::VK_IMAGE_USAGE_TRANSFER_DST_BIT)
-                .set_desired_present_mode(VK_PRESENT_MODE_IMMEDIATE_KHR)
+                .set_desired_present_mode(_engine->presentMode)
                 .set_desired_extent(_engine->windowSize.x, _engine->windowSize.y)
                 .build();
         if (!swapchainResult)
@@ -48,7 +48,7 @@ void Swapchain::init(const std::shared_ptr<Engine>& engine)
     });
 }
 
-uint32_t Swapchain::size()
+uint32_t Swapchain::size() const
 {
     return images.size();
 }

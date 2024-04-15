@@ -86,7 +86,7 @@ extern "C" {
     /// @param [in] width                       The width of the image resource.
     /// @param [in] height                      The height of the image resource.
     /// @param [in] imgFormat                   The format of the image resource.
-    /// @param [in] name                        (optional) A name string to identify the resource in debug mode.
+    /// @param [in] name                        (optional) A name string to identify the resource in debug presentMode.
     /// @param [in] state                       The state the resource is currently in.
     /// 
     /// @returns
@@ -107,7 +107,7 @@ extern "C" {
     /// @param [in] context                     A pointer to a <c><i>FfxFsr2Context</i></c> structure.
     /// @param [in] bufVk                       A Vulkan buffer resource.
     /// @param [in] size                        The size of the buffer resource.
-    /// @param [in] name                        (optional) A name string to identify the resource in debug mode.
+    /// @param [in] name                        (optional) A name string to identify the resource in debug presentMode.
     /// @param [in] state                       The state the resource is currently in.
     /// 
     /// @returns

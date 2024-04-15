@@ -1,3 +1,4 @@
+#include <renderers/common/performance_gui.h>
 #include "triangle_renderer.h"
 
 #include "engine/engine.h"
@@ -5,12 +6,20 @@
 TriangleRenderer::TriangleRenderer(const std::shared_ptr<Engine>& engine) : ARenderer(engine)
 {
     _pipeline = std::make_unique<TrianglePipeline>(engine, _windowRenderPass->renderPass);
+    _p_settings = std::make_shared<PerformanceSettings>();
+    _imguiRenderer = std::make_unique<ImguiRenderer>(engine, _windowRenderPass->renderPass);
     _pipeline->buildAll();
 }
 
 void TriangleRenderer::update(float delta)
 {
     _time += delta;
+    _imguiRenderer->beginFrame();
+    RecreationEventFlags flags = PerformanceGui::draw(delta, _p_settings);
+
+    if (flags & RecreationEventFlags::SWAPCHAIN_RECREATE) {
+        engine->updatePresentMode(_p_settings->presentMode);
+    }
 }
 
 void TriangleRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uint32_t swapchainImage, uint32_t)
@@ -50,6 +59,7 @@ void TriangleRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, ui
     commandBuffer.setScissor(0, 1, &scissor);
 
     commandBuffer.draw(3, 1, 0, 0);
+    _imguiRenderer->draw(commandBuffer);
 
     // End main renderpass
     commandBuffer.endRenderPass();

@@ -20,5 +20,5 @@ public:
 public:
     void init(const std::shared_ptr<Engine>& engine);
 
-    uint32_t size();
+    [[nodiscard]] uint32_t size() const;
 };

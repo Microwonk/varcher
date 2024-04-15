@@ -65,9 +65,9 @@ extern "C" {
 /// dynamic resolution scaling), then there is no need to use these presets.
 ///
 /// Please note that <c><i>FFX_FSR2_QUALITY_MODE_ULTRA_PERFORMANCE</i></c> is
-/// an optional mode which may introduce significant quality degradation in the
+/// an optional presentMode which may introduce significant quality degradation in the
 /// final image. As such it is recommended that you evaluate the final results
-/// of using this scaling mode before deciding if you should include it in your
+/// of using this scaling presentMode before deciding if you should include it in your
 /// application.
 ///
 /// @ingroup FSR2
@@ -291,7 +291,7 @@ FFX_API FfxErrorCode ffxFsr2ContextGenerateReactiveMask(FfxFsr2Context* context,
 /// @ingroup FSR2
 FFX_API FfxErrorCode ffxFsr2ContextDestroy(FfxFsr2Context* context);
 
-/// Get the upscale ratio from the quality mode.
+/// Get the upscale ratio from the quality presentMode.
 ///
 /// The following table enumerates the mapping of the quality modes to
 /// per-dimension scaling ratios.
@@ -305,7 +305,7 @@ FFX_API FfxErrorCode ffxFsr2ContextDestroy(FfxFsr2Context* context);
 ///
 /// Passing an invalid <c><i>qualityMode</i></c> will return 0.0f.
 ///
-/// @param [in] qualityMode             The quality mode preset.
+/// @param [in] qualityMode             The quality presentMode preset.
 ///
 /// @returns
 /// The upscaling the per-dimension upscaling ratio for
@@ -324,14 +324,14 @@ FFX_API float ffxFsr2GetUpscaleRatioFromQualityMode(FfxFsr2QualityMode qualityMo
 /// @param [out] renderHeight           A pointer to a <c>uint32_t</c> which will hold the calculated render resolution height.
 /// @param [in] displayWidth            The target display resolution width.
 /// @param [in] displayHeight           The target display resolution height.
-/// @param [in] qualityMode             The desired quality mode for FSR 2 upscaling.
+/// @param [in] qualityMode             The desired quality presentMode for FSR 2 upscaling.
 ///
 /// @retval
 /// FFX_OK                              The operation completed successfully.
 /// @retval
 /// FFX_ERROR_INVALID_POINTER           Either <c><i>renderWidth</i></c> or <c><i>renderHeight</i></c> was <c>NULL</c>.
 /// @retval
-/// FFX_ERROR_INVALID_ENUM              An invalid quality mode was specified.
+/// FFX_ERROR_INVALID_ENUM              An invalid quality presentMode was specified.
 ///
 /// @ingroup FSR2
 FFX_API FfxErrorCode ffxFsr2GetRenderResolutionFromQualityMode(

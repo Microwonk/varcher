@@ -20,6 +20,7 @@ public:
     GLFWwindow* window;
     glm::uvec2 windowSize = { 1280, 720 };
     bool windowResized = false;
+    bool presentModeChanged = false;
 
     InputCallbacks inputs;
 
@@ -34,6 +35,7 @@ public:
     VmaAllocator allocator;
 
     vk::SurfaceKHR surface;
+    VkPresentModeKHR presentMode;
 
     DeletionQueue deletionQueue;
     std::optional<RecreationQueue> recreationQueue;
@@ -68,6 +70,7 @@ public:
     void destroy();
 
     void upload_submit(const std::function<void(const vk::CommandBuffer& cmd)>& recordCommands);
+    void updatePresentMode(VkPresentModeKHR mode);
 
 private:
     void draw(float delta);

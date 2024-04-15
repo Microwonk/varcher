@@ -2,7 +2,7 @@
 #include <filesystem>
 #include "app.h"
 
-#define STANDARD_RENDERER 'V'
+#define STANDARD_RENDERER 'T'
 
 inline auto printArchetypes() {
     std::cout << "Currently available archetypes are: ";

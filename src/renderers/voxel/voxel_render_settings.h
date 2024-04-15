@@ -45,7 +45,6 @@ public:
     std::string voxPath = "../resource/floatingcolored.vox";
     std::string skyboxPath = "../resource/rustig_koppie.hdr";
 
-public:
     [[nodiscard]] glm::uvec2 renderResolution() const;
 };
 
