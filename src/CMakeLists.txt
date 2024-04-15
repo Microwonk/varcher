@@ -12,8 +12,7 @@ find_package(Stb REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(unofficial-nativefiledialog CONFIG)
 
-add_library(${PROJECT_NAME} STATIC ${LIB_SOURCES}
-        renderers/common/performance_settings.h)
+add_library(${PROJECT_NAME} STATIC ${LIB_SOURCES})
 
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

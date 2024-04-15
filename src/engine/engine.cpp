@@ -141,9 +141,7 @@ void Engine::resize()
     windowResized = false;
 
     device.waitIdle();
-
     recreationQueue->fire(RecreationEventFlags::WINDOW_RESIZE);
-
     device.waitIdle();
 }
 
