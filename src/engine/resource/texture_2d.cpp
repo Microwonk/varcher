@@ -13,10 +13,11 @@ static size_t formatSize(vk::Format format)
     {
         case vk::Format::eR32G32B32A32Sfloat:
             return 16;
-        case vk::Format::eR8G8B8A8Unorm:
+        //case vk::Format::eR8G8B8A8Unorm:
+        //    return 4;
+        default:
             return 4;
     }
-    return 4;
 }
 
 
@@ -79,7 +80,7 @@ Texture2D::Texture2D(const std::shared_ptr<Engine>& engine,
     imageAllocInfo.usage = VMA_MEMORY_USAGE_GPU_ONLY;
 
     // Actually create the image
-    VkImageCreateInfo imageInfoC = VkImageCreateInfo(imageInfo);
+    auto imageInfoC = VkImageCreateInfo(imageInfo);
     VkImage imageC;
     auto res = vmaCreateImage(engine->allocator, &imageInfoC, &imageAllocInfo, &imageC, &allocation, nullptr);
     vk::resultCheck(vk::Result(res), "Error creating image");

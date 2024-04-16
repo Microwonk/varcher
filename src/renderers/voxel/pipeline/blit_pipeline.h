@@ -27,8 +27,8 @@ public:
     static BlitPipeline build(const std::shared_ptr<Engine>& engine, const vk::RenderPass& pass);
 
 protected:
-    virtual std::vector<vk::PipelineShaderStageCreateInfo> buildShaderStages() override;
-    virtual vk::PipelineVertexInputStateCreateInfo buildVertexInputInfo() override;
-    virtual vk::PipelineInputAssemblyStateCreateInfo buildInputAssembly() override;
-    virtual vk::PipelineLayoutCreateInfo buildPipelineLayout() override;
+    std::vector<vk::PipelineShaderStageCreateInfo> buildShaderStages() override;
+    vk::PipelineVertexInputStateCreateInfo buildVertexInputInfo() override;
+    vk::PipelineInputAssemblyStateCreateInfo buildInputAssembly() override;
+    vk::PipelineLayoutCreateInfo buildPipelineLayout() override;
 };

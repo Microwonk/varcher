@@ -17,7 +17,7 @@ public:
     vk::Sampler sampler;
 
 private:
-    VmaAllocation allocation;
+    VmaAllocation allocation{};
 
 public:
     Texture2D(const std::shared_ptr<Engine>& engine,

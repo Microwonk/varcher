@@ -1,7 +1,6 @@
 #include "framebuffer.h"
 
 #include "engine/engine.h"
-#include "engine/debug_marker.h"
 
 FramebufferBuilder& FramebufferBuilder::color(vk::ImageView imageView)
 {
@@ -42,8 +41,6 @@ Framebuffer FramebufferBuilder::build(const std::string& name)
     framebuffer.pushDeletor([=](const std::shared_ptr<Engine>& delEngine) {
         delEngine->device.destroy(createdFramebuffer);
     });
-
-    DebugMarker::setObjectName(engine->device, (VkFramebuffer)createdFramebuffer, name);
 
     return framebuffer;
 }

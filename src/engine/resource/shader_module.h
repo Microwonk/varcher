@@ -16,5 +16,5 @@ private:
 public:
     ShaderModule(const std::shared_ptr<Engine>& engine, const std::string& filename, vk::ShaderStageFlagBits stage);
 
-    vk::PipelineShaderStageCreateInfo buildStageCreateInfo() const;
+    [[nodiscard]] vk::PipelineShaderStageCreateInfo buildStageCreateInfo() const;
 };

@@ -26,7 +26,7 @@ void TriangleRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, ui
 {
     // Create clear color for this frame
     vk::ClearValue clearValue;
-    float flash = abs(sin(_time));
+    float flash = std::abs(sin(_time));
     clearValue.color = vk::ClearColorValue(std::array<float, 4> {0.0f, 0.0f, flash, 1.0f});
 
     // Start main renderpass
