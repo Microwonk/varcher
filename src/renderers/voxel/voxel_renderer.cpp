@@ -14,10 +14,9 @@ VoxelRenderer::VoxelRenderer(const std::shared_ptr<Engine>& engine) : ARenderer(
 
     _camera = std::make_unique<CameraController>(engine, glm::vec3(8, 8, -50), 90.0f, 0.0f, static_cast<float>(1 / glm::tan(glm::radians(55.0f / 2))));
 
-    _noiseTexture = std::make_shared<Texture2D>(engine, "../resource/blue_noise_rgba.png", 4, vk::Format::eR8G8B8A8Unorm);
     _scene = std::make_shared<VoxelScene>(engine, _v_settings->voxPath, _v_settings->skyboxPath);
 
-    _geometryStage = std::make_unique<GeometryStage>(engine, _v_settings, _scene, _noiseTexture);
+    _geometryStage = std::make_unique<GeometryStage>(engine, _v_settings, _scene);
 #ifdef _WIN32
     _upscalerStage = std::make_unique<UpscalerStage>(engine, _v_settings);
 #endif
@@ -43,7 +42,7 @@ void VoxelRenderer::update(float delta)
         _scene = std::make_shared<VoxelScene>(engine, _v_settings->voxPath, _v_settings->skyboxPath);
 
         _geometryStage->destroy();
-        _geometryStage = std::make_unique<GeometryStage>(engine, _v_settings, _scene, _noiseTexture);
+        _geometryStage = std::make_unique<GeometryStage>(engine, _v_settings, _scene);
     }
 
     if (flags & RecreationEventFlags::SWAPCHAIN_RECREATE) {

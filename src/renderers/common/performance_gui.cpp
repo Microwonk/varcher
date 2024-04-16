@@ -14,6 +14,10 @@ const std::vector<VkPresentModeKHR> presentmodeOptions = {
 
 RecreationEventFlags PerformanceGui::draw(float delta, const std::shared_ptr<PerformanceSettings>& settings)
 {
+    static float delta_accum = 0;
+    static float last_fps = 0;
+    delta_accum += delta;
+
     RecreationEventFlags flags;
     static float ft_history[25];
     std::rotate(std::begin(ft_history), std::next(std::begin(ft_history)), std::end(ft_history));
@@ -38,7 +42,12 @@ RecreationEventFlags PerformanceGui::draw(float delta, const std::shared_ptr<Per
         ImGui::EndCombo();
     }
 
-    ImGui::LabelText("FPS", "%s", fmt::format("{:.0f}", 1.0f / delta).c_str());
+    // the fps gets updated
+    if (delta_accum > 0.5) {
+        last_fps = 1.0f / delta;
+        delta_accum = 0;
+    }
+    ImGui::LabelText("FPS", "%s", fmt::format("{:.0f}", last_fps).c_str());
     ImGui::LabelText("Frame Time", "%s", fmt::format("{}", delta * 1000).c_str());
     ImGui::PlotHistogram("Frame Time History", ft_history, 25, 0, nullptr, 0, 1.0f / 30.0f, ImVec2(0, 80));
     ImGui::End();

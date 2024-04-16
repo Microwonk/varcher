@@ -23,7 +23,6 @@ private:
     std::shared_ptr<PerformanceSettings> _p_settings;
 
     std::shared_ptr<VoxelScene> _scene;
-    std::shared_ptr<Texture2D> _noiseTexture;
 
     std::unique_ptr<GeometryStage> _geometryStage;
 #ifdef _WIN32

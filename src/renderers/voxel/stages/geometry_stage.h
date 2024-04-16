@@ -48,7 +48,7 @@ private:
     std::unique_ptr<VoxelSDFPipeline> _pipeline;
 
 public:
-    GeometryStage(const std::shared_ptr<Engine>& engine, const std::shared_ptr<VoxelRenderSettings>& settings, const std::shared_ptr<VoxelScene>& scene, const std::shared_ptr<Texture2D>& noise);
+    GeometryStage(const std::shared_ptr<Engine>& engine, const std::shared_ptr<VoxelRenderSettings>& settings, const std::shared_ptr<VoxelScene>& scene);
 
     GeometryBuffer record(const vk::CommandBuffer& cmd, uint32_t flightFrame);
 

@@ -6,9 +6,8 @@
 
 inline auto printArchetypes() {
     std::cout << "Currently available archetypes are: ";
-    auto archetypes = getArchetypes();
-    for (const char a: archetypes) {
-        std::cout << a << (a == archetypes.back() ? "" : ", ");
+    for (const char a: types) {
+        std::cout << a << (a == types.back() ? "" : ", ");
     }
     std::cout << std::endl;
 }
@@ -31,7 +30,7 @@ int main(int argc, char* argv[]) {
         archetype = argv[1][0];
     }
     try {
-        return run(fromArchetype(archetype));
+        return run(archetype);
     } catch (std::invalid_argument &e) {
         std::cerr << "ERROR: could not parse rendering archetype" << std::endl;
         printArchetypes();

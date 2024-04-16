@@ -12,7 +12,13 @@ find_package(Stb REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(unofficial-nativefiledialog CONFIG)
 
-add_library(${PROJECT_NAME} STATIC ${LIB_SOURCES})
+add_library(${PROJECT_NAME} STATIC ${LIB_SOURCES}
+        renderers/galaxy/galaxy_renderer.cpp
+        renderers/galaxy/galaxy_renderer.h
+        renderers/galaxy/pipeline/grid_pipeline.cpp
+        renderers/galaxy/pipeline/grid_pipeline.h
+        renderers/galaxy/stages/grid_stage.cpp
+        renderers/galaxy/stages/grid_stage.h)
 
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

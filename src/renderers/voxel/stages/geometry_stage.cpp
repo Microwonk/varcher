@@ -3,7 +3,7 @@
 #include "engine/engine.h"
 #include "engine/commands/command_util.h"
 
-GeometryStage::GeometryStage(const std::shared_ptr<Engine>& engine, const std::shared_ptr<VoxelRenderSettings>& settings, const std::shared_ptr<VoxelScene>& scene, const std::shared_ptr<Texture2D>& noise) : AVoxelRenderStage(engine, settings), _scene(scene)
+GeometryStage::GeometryStage(const std::shared_ptr<Engine>& engine, const std::shared_ptr<VoxelRenderSettings>& settings, const std::shared_ptr<VoxelScene>& scene) : AVoxelRenderStage(engine, settings), _scene(scene)
 {
     _parametersBuffer = std::make_unique<Buffer>(engine, sizeof(VolumeParameters), vk::BufferUsageFlagBits::eUniformBuffer, VMA_MEMORY_USAGE_CPU_TO_GPU, "G-Pass Parameters Buffer");
     _parametersBuffer->copyData(&_parameters, sizeof(VolumeParameters));
@@ -84,7 +84,7 @@ GeometryStage::GeometryStage(const std::shared_ptr<Engine>& engine, const std::s
     recreatorId = engine->recreationQueue->push(RecreationEventFlags::RENDER_RESIZE, [&]() {
         _pipeline->descriptorSet->initImage(0, scene->sceneTexture->imageView, scene->sceneTexture->sampler, vk::ImageLayout::eShaderReadOnlyOptimal);
         _pipeline->descriptorSet->initBuffer(1, scene->paletteBuffer->buffer, scene->paletteBuffer->size, vk::DescriptorType::eUniformBuffer);
-        _pipeline->descriptorSet->initImage(2, noise->imageView, noise->sampler, vk::ImageLayout::eShaderReadOnlyOptimal);
+//        _pipeline->descriptorSet->initImage(2, noise->imageView, noise->sampler, vk::ImageLayout::eShaderReadOnlyOptimal);
         _pipeline->descriptorSet->initBuffer(5, scene->lightBuffer->buffer, scene->lightBuffer->size, vk::DescriptorType::eUniformBuffer);
         _pipeline->descriptorSet->initImage(6, scene->skyboxTexture->imageView, scene->skyboxTexture->sampler, vk::ImageLayout::eShaderReadOnlyOptimal);
 

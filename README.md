@@ -1,8 +1,19 @@
 # VARCHER
 
-(formerly Voxel Ray Marcher)
+### (formerly 'Voxel Ray Marcher')
 
 Now a Vulkan learning environment, aiming to provide small examples from Ray Tracing, Particle Systems, Compute Pipelines and much more in the future. 
+
+## Showcase
+
+### Simple Triangle renderer
+![Triangle Screenshot](screenshots/triangle.png "Triangle")
+
+### Voxel Raytracer demo with a [mandlebulb](resource/mandlebulb.vox) model.
+![Mandlebulb Screenshot](screenshots/mandlebulb.png "Mandlebulb")
+
+### Galaxy Renderer
+TODO
 
 ## Building
 
