@@ -2,7 +2,7 @@
   "version": 2,
   "configurePresets": [
     {
-      "name": "linux-clang",
+      "name": "clang",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
