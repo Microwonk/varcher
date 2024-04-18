@@ -1,4 +1,6 @@
 #include <renderers/common/performance_gui.h>
+
+#include <cmath>
 #include "triangle_renderer.h"
 
 #include "engine/engine.h"
@@ -26,8 +28,8 @@ void TriangleRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, ui
 {
     // Create clear color for this frame
     vk::ClearValue clearValue;
-    float flash = std::abs(sin(_time));
-    clearValue.color = vk::ClearColorValue(std::array<float, 4> {0.0f, 0.0f, flash, 1.0f});
+    float flash = std::abs(std::sin(_time));
+    clearValue.color = vk::ClearColorValue(std::array<float, 4> {0.5f, 0.25f, flash, 1.0f});
 
     // Start main renderpass
     vk::RenderPassBeginInfo renderpassInfo;

@@ -5,10 +5,16 @@
 #include <engine/resource/render_image.h>
 #include <engine/pipeline/framebuffer.h>
 #include <engine/pipeline/render_pass.h>
+#include <engine/engine.h>
+#include "engine/resource/buffer.h"
+#include "renderers/galaxy/resource/parameters.h"
 
 class GridStage : public AResource {
 private:
     std::unique_ptr<GridPipeline> _pipeline;
+
+    Camera _camera = {};
+    std::unique_ptr<Buffer> _cameraBuffer;
 
 public:
     GridStage(const std::shared_ptr<Engine>& engine, const RenderPass& renderPass);

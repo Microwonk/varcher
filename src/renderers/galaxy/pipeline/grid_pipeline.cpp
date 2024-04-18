@@ -1,7 +1,14 @@
 #include "grid_pipeline.h"
 
-struct GridPush {
+struct GridPushVert {
     glm::mat4 model;
+};
+
+struct GridPushFrag {
+    glm::vec2 offset;
+    int numCells;
+    float thickness;
+    float scroll; // in [1, 2]
 };
 
 GridPipeline GridPipeline::build(const std::shared_ptr<Engine> &engine, const vk::RenderPass &pass) {
@@ -42,22 +49,33 @@ vk::PipelineInputAssemblyStateCreateInfo GridPipeline::buildInputAssembly() {
 }
 
 vk::PipelineLayoutCreateInfo GridPipeline::buildPipelineLayout() {
-    // Screen push constants
-    pushConstantRange->offset = 0;
-    pushConstantRange->size = sizeof(GridPush); // Assuming Model is the push constant structure
-    pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment;
+    // push constants
+    v_pushConstantRange->offset = 0;
+    v_pushConstantRange->size = sizeof(GridPushVert);
+    v_pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eVertex;
+
+    f_pushConstantRange->offset = sizeof(GridPushVert);
+    f_pushConstantRange->size = sizeof(GridPushFrag);
+    f_pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eFragment;
+
+    std::array<vk::PushConstantRange, 2> pushConstantRanges = {
+            {
+                    // Vertex shader push constant range
+                    v_pushConstantRange.value(),
+                    // Fragment shader push constant range
+                    f_pushConstantRange.value()
+            }
+    };
 
     // Shader uniforms
     auto gridDescriptorSet = DescriptorSetBuilder(engine)
             .buffer(0, vk::ShaderStageFlagBits::eVertex, vk::DescriptorType::eUniformBuffer) // Binding 0 for Camera uniform buffer
-            .buffer(1, vk::ShaderStageFlagBits::eFragment, vk::DescriptorType::eUniformBuffer) // Binding 1 for Params push constant
-            .image(2, vk::ShaderStageFlagBits::eFragment) // Binding 2 for image in fragment shader
             .build("Grid Descriptor Set");
 
     // Set up push constant range
     vk::PipelineLayoutCreateInfo layoutInfo;
-    layoutInfo.pushConstantRangeCount = 1;
-    layoutInfo.pPushConstantRanges = &pushConstantRange.value();
+    layoutInfo.pushConstantRangeCount = static_cast<uint32_t>(pushConstantRanges.size());
+    layoutInfo.pPushConstantRanges = pushConstantRanges.data(); // also add f_pushConstantRange.value()
 
     // Set up descriptor set layout
     layoutInfo.setLayoutCount = 1;

@@ -7,7 +7,8 @@
 class GridPipeline : public APipeline {
 public:
     std::optional<DescriptorSet> descriptorSet;
-    std::optional<vk::PushConstantRange> pushConstantRange;
+    std::optional<vk::PushConstantRange> v_pushConstantRange;
+    std::optional<vk::PushConstantRange> f_pushConstantRange;
 
     static GridPipeline build(const std::shared_ptr<Engine> &engine, const vk::RenderPass &pass);
 
