@@ -186,10 +186,13 @@ void Engine::initVulkan() {
     getDeviceProcAddr = dl.getProcAddress<PFN_vkGetDeviceProcAddr>("vkGetDeviceProcAddr");
 
     // Create Vulkan instance
+    uint32_t extensions;
+    auto glfwExt = glfwGetRequiredInstanceExtensions(&extensions);
     vkb::InstanceBuilder instanceBuilder;
     instanceBuilder = instanceBuilder
             .set_app_name("Engine")
-            .require_api_version(1, 2, 0);
+            .require_api_version(1, 2, 0)
+            .enable_extensions(extensions, glfwExt);
 
     if (VULKAN_DEBUG) {
         instanceBuilder = instanceBuilder

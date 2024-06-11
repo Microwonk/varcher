@@ -16,9 +16,13 @@ layout(binding = 0) uniform Camera
     mat4 u_viewProj;
 };
 
-layout(push_constant) uniform Model
+layout(push_constant) uniform Params
 {
+    vec2 u_offset;
     mat4 u_model;
+    int u_numCells;
+    float u_thickness;
+    float u_scroll; // in [1, 2]
 };
 
 //----------------------------------------------------------------------------//

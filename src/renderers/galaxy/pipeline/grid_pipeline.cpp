@@ -1,11 +1,9 @@
 #include "grid_pipeline.h"
 
-struct GridPushVert {
-    glm::mat4 model;
-};
-
-struct GridPushFrag {
+struct GridPush {
     glm::vec2 offset;
+    // alignas very important, need memory alignment correct for vulkan spec
+    alignas(16) glm::mat4 model;
     int numCells;
     float thickness;
     float scroll; // in [1, 2]
@@ -33,10 +31,31 @@ std::vector<vk::PipelineShaderStageCreateInfo> GridPipeline::buildShaderStages()
 }
 
 vk::PipelineVertexInputStateCreateInfo GridPipeline::buildVertexInputInfo() {
-    vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
-    vertexInputInfo.vertexBindingDescriptionCount = 0;
-    vertexInputInfo.vertexAttributeDescriptionCount = 0;
+    vk::VertexInputBindingDescription bindingDescription = {};
+    bindingDescription.binding = 0;
+    bindingDescription.stride = sizeof(Vertex);
+    bindingDescription.inputRate = vk::VertexInputRate::eVertex;
 
+    vk::VertexInputAttributeDescription vertPositionAttrib = {};
+    vertPositionAttrib.binding = 0;
+    vertPositionAttrib.location = 0;
+    vertPositionAttrib.format = vk::Format::eR32G32B32Sfloat;
+    vertPositionAttrib.offset = offsetof(Vertex, pos);
+
+    vk::VertexInputAttributeDescription vertTexCoordAttrib = {};
+    vertTexCoordAttrib.binding = 0;
+    vertTexCoordAttrib.location = 1;
+    vertTexCoordAttrib.format = vk::Format::eR32G32Sfloat;
+    vertTexCoordAttrib.offset = offsetof(Vertex, texCoord);
+
+    vk::VertexInputAttributeDescription attributeDescriptions[] = { vertPositionAttrib, vertTexCoordAttrib };
+
+    vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
+    vertexInputInfo.sType = vk::StructureType::ePipelineVertexInputStateCreateInfo;
+    vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
+    vertexInputInfo.vertexBindingDescriptionCount = 1;
+    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions;
+    vertexInputInfo.vertexAttributeDescriptionCount = 2;
     return vertexInputInfo;
 }
 
@@ -50,44 +69,46 @@ vk::PipelineInputAssemblyStateCreateInfo GridPipeline::buildInputAssembly() {
 
 vk::PipelineLayoutCreateInfo GridPipeline::buildPipelineLayout() {
     // push constants
-    v_pushConstantRange->offset = 0;
-    v_pushConstantRange->size = sizeof(GridPushVert);
-    v_pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eVertex;
-
-    f_pushConstantRange->offset = sizeof(GridPushVert);
-    f_pushConstantRange->size = sizeof(GridPushFrag);
-    f_pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eFragment;
-
-    std::array<vk::PushConstantRange, 2> pushConstantRanges = {
-            {
-                    // Vertex shader push constant range
-                    v_pushConstantRange.value(),
-                    // Fragment shader push constant range
-                    f_pushConstantRange.value()
-            }
-    };
+    pushConstantRange = vk::PushConstantRange();
+    pushConstantRange->offset = 0;
+    pushConstantRange->size = sizeof(GridPush);
+    pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment;
 
     // Shader uniforms
     auto gridDescriptorSet = DescriptorSetBuilder(engine)
             .buffer(0, vk::ShaderStageFlagBits::eVertex, vk::DescriptorType::eUniformBuffer) // Binding 0 for Camera uniform buffer
             .build("Grid Descriptor Set");
-
-    // Set up push constant range
-    vk::PipelineLayoutCreateInfo layoutInfo;
-    layoutInfo.pushConstantRangeCount = static_cast<uint32_t>(pushConstantRanges.size());
-    layoutInfo.pPushConstantRanges = pushConstantRanges.data(); // also add f_pushConstantRange.value()
-
-    // Set up descriptor set layout
-    layoutInfo.setLayoutCount = 1;
-    layoutInfo.pSetLayouts = &gridDescriptorSet.layout;
-
     // Store descriptor set for later use
     descriptorSet = gridDescriptorSet;
-
     // Remember to destroy descriptor set when no longer needed
     pushDeletor([=](const std::shared_ptr<Engine> &) {
         gridDescriptorSet.destroy();
     });
 
+    // Set up push constant range
+    vk::PipelineLayoutCreateInfo layoutInfo;
+    layoutInfo.sType = vk::StructureType::ePipelineLayoutCreateInfo;
+    layoutInfo.pushConstantRangeCount = 1;
+    layoutInfo.pPushConstantRanges = &pushConstantRange.value();
+    layoutInfo.setLayoutCount = 1;
+    layoutInfo.pSetLayouts = &descriptorSet->layout;
+
     return layoutInfo;
 }
+
+//vk::PipelineColorBlendStateCreateInfo GridPipeline::buildColorBlendAttachment() {
+//    vk::PipelineColorBlendAttachmentState colorBlendAttachment = {};
+//    colorBlendAttachment.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
+//    colorBlendAttachment.blendEnable = false;
+//    colorBlendAttachment.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
+//    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+//    colorBlendAttachment.colorBlendOp = vk::BlendOp::eAdd;
+//    colorBlendAttachment.srcAlphaBlendFactor = vk::BlendFactor::eOne;
+//    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eZero;
+//    colorBlendAttachment.alphaBlendOp = vk::BlendOp::eAdd;
+//
+//    vk::PipelineColorBlendStateCreateInfo ret{};
+//    ret.attachmentCount = 1;
+//    ret.pAttachments = &colorBlendAttachment;
+//    return ret;
+//}

@@ -10,7 +10,8 @@ layout(location = 0) out vec4 o_color;
 
 layout(push_constant) uniform Params
 {
-    layout(offset = 64) vec2 u_offset;
+    vec2 u_offset;
+    mat4 u_model;
     int u_numCells;
     float u_thickness;
     float u_scroll; // in [1, 2]
