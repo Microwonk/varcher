@@ -19,7 +19,7 @@ private:
 public:
     GridStage(const std::shared_ptr<Engine>& engine, const RenderPass& renderPass);
 
-    void record(const vk::CommandBuffer &cmd, uint32_t flightFrame, const RenderImage &image,
+    void record(const vk::CommandBuffer &cmd, uint32_t flightFrame,
                 const Framebuffer &windowFramebuffer, const RenderPass &windowRenderPass,
                 std::function<void(const vk::CommandBuffer &)> uiStage);
 

@@ -31,33 +31,38 @@ std::vector<vk::PipelineShaderStageCreateInfo> GridPipeline::buildShaderStages()
 }
 
 vk::PipelineVertexInputStateCreateInfo GridPipeline::buildVertexInputInfo() {
+    bindingDescriptions.clear();
+    attributeDescriptions.clear();
+
     vk::VertexInputBindingDescription bindingDescription = {};
     bindingDescription.binding = 0;
     bindingDescription.stride = sizeof(Vertex);
     bindingDescription.inputRate = vk::VertexInputRate::eVertex;
+    bindingDescriptions.push_back(bindingDescription);
 
     vk::VertexInputAttributeDescription vertPositionAttrib = {};
     vertPositionAttrib.binding = 0;
     vertPositionAttrib.location = 0;
     vertPositionAttrib.format = vk::Format::eR32G32B32Sfloat;
     vertPositionAttrib.offset = offsetof(Vertex, pos);
+    attributeDescriptions.push_back(vertPositionAttrib);
 
     vk::VertexInputAttributeDescription vertTexCoordAttrib = {};
     vertTexCoordAttrib.binding = 0;
     vertTexCoordAttrib.location = 1;
     vertTexCoordAttrib.format = vk::Format::eR32G32Sfloat;
     vertTexCoordAttrib.offset = offsetof(Vertex, texCoord);
-
-    vk::VertexInputAttributeDescription attributeDescriptions[] = { vertPositionAttrib, vertTexCoordAttrib };
+    attributeDescriptions.push_back(vertTexCoordAttrib);
 
     vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
     vertexInputInfo.sType = vk::StructureType::ePipelineVertexInputStateCreateInfo;
-    vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
-    vertexInputInfo.vertexBindingDescriptionCount = 1;
-    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions;
-    vertexInputInfo.vertexAttributeDescriptionCount = 2;
+    vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
+    vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
+    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
     return vertexInputInfo;
 }
+
 
 vk::PipelineInputAssemblyStateCreateInfo GridPipeline::buildInputAssembly() {
     // Triangle list with no restart

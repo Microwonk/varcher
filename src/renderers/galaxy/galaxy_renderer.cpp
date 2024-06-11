@@ -3,6 +3,7 @@
 
 GalaxyRenderer::GalaxyRenderer(const std::shared_ptr<Engine> &engine) : ARenderer(engine) {
     _gridStage = std::make_unique<GridStage>(engine, *_windowRenderPass);
+    _p_settings = std::make_shared<PerformanceSettings>();
 
     _imguiRenderer = std::make_unique<ImguiRenderer>(engine, _windowRenderPass->renderPass);
 }
@@ -18,5 +19,5 @@ void GalaxyRenderer::update(float delta) {
 }
 
 void GalaxyRenderer::recordCommands(const vk::CommandBuffer &commandBuffer, uint32_t swapchainImage, uint32_t flightFrame) {
-
+    _gridStage->record(commandBuffer, flightFrame, _windowFramebuffers[swapchainImage], *_windowRenderPass, [=](const vk::CommandBuffer &cmd) {_imguiRenderer->draw(cmd);});
 }

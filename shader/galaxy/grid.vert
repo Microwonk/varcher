@@ -9,7 +9,7 @@ layout(location = 0) out vec2 o_texPos;
 
 //----------------------------------------------------------------------------//
 
-layout(binding = 0) uniform Camera
+layout(set = 0, binding = 0) uniform Camera
 {
     mat4 u_view;
     mat4 u_proj;

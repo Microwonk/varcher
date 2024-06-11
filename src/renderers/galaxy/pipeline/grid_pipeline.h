@@ -33,4 +33,7 @@ protected:
 private:
     std::optional<ShaderModule> vertexModule;
     std::optional<ShaderModule> fragmentModule;
+
+    std::vector<vk::VertexInputBindingDescription> bindingDescriptions;
+    std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
 };
