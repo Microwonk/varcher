@@ -2,7 +2,7 @@
 
 #include <optional>
 #include <renderers/common/performance_settings.h>
-#include "renderers/voxel/resource/camera_controller.h"
+#include "renderers/common/camera_controller.h"
 #include "renderers/voxel/resource/voxel_scene.h"
 #include "voxel_render_settings.h"
 

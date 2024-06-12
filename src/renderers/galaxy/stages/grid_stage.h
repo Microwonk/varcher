@@ -6,9 +6,9 @@
 #include <engine/pipeline/framebuffer.h>
 #include <engine/pipeline/render_pass.h>
 #include <engine/engine.h>
+#include <renderers/common/camera_controller.h>
 #include "engine/resource/buffer.h"
 #include "renderers/galaxy/resource/parameters.h"
-#include "renderers/galaxy/resource/camera.h"
 
 class GridStage : public AResource {
 private:
@@ -26,7 +26,7 @@ public:
     void record(const vk::CommandBuffer &cmd, uint32_t flightFrame,
                 const Framebuffer &windowFramebuffer, const RenderPass &windowRenderPass,
                 const std::function<void(const vk::CommandBuffer &)>& uiStage,
-                GridParams params);
+                const std::shared_ptr<CameraController>& params);
 
     [[nodiscard]] const vk::PipelineLayout &getPipelineLayout() const;
 };

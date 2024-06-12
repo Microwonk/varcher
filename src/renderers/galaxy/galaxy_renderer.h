@@ -4,14 +4,17 @@
 #include <engine/renderer.h>
 #include <engine/gui/imgui_renderer.h>
 #include <renderers/galaxy/stages/grid_stage.h>
+#include <renderers/common/camera_controller.h>
 
 class GalaxyRenderer : public ARenderer {
 private:
     std::shared_ptr<PerformanceSettings> _p_settings;
     std::unique_ptr<ImguiRenderer> _imguiRenderer;
+    std::shared_ptr<CameraController> _camera;
+
+    std::shared_ptr<RenderPass> _renderPass;
 
     float _time = 0;
-    GameCamera _gameCamera = {};
 
     std::unique_ptr<GridStage> _gridStage;
 

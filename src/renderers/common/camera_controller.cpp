@@ -25,6 +25,7 @@ void CameraController::updateDirectionVectors()
     up = glm::normalize(glm::cross(right, normalDir));
 
     direction = normalDir * focalLength;
+    // fmt::println("x{}, y{}, z{}", direction.x, direction.y, direction.z);
 }
 
 void CameraController::update(float delta)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "camera.h"
 
 struct ViewUniforms {
     glm::mat4 view;
@@ -9,7 +8,7 @@ struct ViewUniforms {
     glm::vec3 pos;
 };
 
-struct GridParams {
-    GameCamera cam;
-    float fov = CAMERA_FOV;
+struct Vertex {
+    glm::vec3 pos;
+    glm::vec2 color;
 };

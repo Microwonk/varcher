@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
 
 struct GLFWwindow;
 class Engine;
@@ -31,6 +33,15 @@ public:
 
     void update(float delta);
     void mouseCallback(GLFWwindow* window, double xpos, double ypos);
+
+    [[nodiscard]] glm::mat4 getViewMatrix() const {
+        // Assuming the camera's target direction is calculated elsewhere and stored in 'direction'
+        return glm::lookAt(position, position + direction, up);
+    }
+
+    [[nodiscard]] glm::mat4 getProjectionMatrix(float fov, float aspectRatio, float nearPlane, float farPlane) const {
+        return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+    }
 
 private:
     void updateDirectionVectors();

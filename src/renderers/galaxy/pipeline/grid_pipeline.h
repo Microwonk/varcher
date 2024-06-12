@@ -7,7 +7,6 @@
 class GridPipeline : public APipeline {
 public:
     std::optional<DescriptorSet> descriptorSet;
-    std::optional<vk::PushConstantRange> pushConstantRange;
 
     static GridPipeline build(const std::shared_ptr<Engine> &engine, const vk::RenderPass &pass);
 
@@ -22,6 +21,14 @@ protected:
 
     vk::PipelineVertexInputStateCreateInfo buildVertexInputInfo() override;
 
+//    vk::PipelineRasterizationStateCreateInfo buildRasterizer() override;
+//
+//    vk::PipelineColorBlendStateCreateInfo buildColorBlendAttachment() override;
+//
+//    vk::PipelineDepthStencilStateCreateInfo buildDepthStencil() override;
+//
+//    vk::PipelineMultisampleStateCreateInfo buildMultisampling() override;
+
 private:
     std::optional<ShaderModule> vertexModule;
     std::optional<ShaderModule> fragmentModule;
@@ -29,5 +36,4 @@ private:
     std::vector<vk::VertexInputBindingDescription> bindingDescriptions;
     std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
 
-    std::vector<vk::PipelineColorBlendAttachmentState> attachments;
 };
