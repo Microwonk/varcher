@@ -4,7 +4,7 @@
 #include "engine/engine.h"
 
 constexpr float CAMERA_FOV = 45.0f;
-constexpr float CAMERA_MAX_DIST = 8000.0f;
+constexpr float CAMERA_MAX_DIST = 200.0f;
 constexpr float CAMERA_MIN_TILT = 15.0f;
 constexpr float CAMERA_MAX_TILT = 89.0f;
 constexpr float CAMERA_MAX_POSITION = 7000.0f;
@@ -21,7 +21,7 @@ struct GameCamera {
     float targetAngle = 45.0f;
     float tilt = 45.0f;
     float targetTilt = 45.0f;
-    glm::vec3 pos;
+    glm::vec3 pos = {0,0,5};
 
     template<typename T>
     void decayTo(T& value, T target, float rate, float dt);

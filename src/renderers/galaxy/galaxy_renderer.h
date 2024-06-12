@@ -10,11 +10,6 @@ private:
     std::shared_ptr<PerformanceSettings> _p_settings;
     std::unique_ptr<ImguiRenderer> _imguiRenderer;
 
-    std::unique_ptr<RenderImage> _colorTarget;
-    std::unique_ptr<RenderImage> _depthTarget;
-    std::unique_ptr<RenderPass> _renderPass;
-    ResourceRing<Framebuffer> _framebuffers;
-
     float _time = 0;
     GameCamera _gameCamera = {};
 

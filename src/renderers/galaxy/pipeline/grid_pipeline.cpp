@@ -21,40 +21,6 @@ std::vector<vk::PipelineShaderStageCreateInfo> GridPipeline::buildShaderStages()
     };
 }
 
-vk::PipelineVertexInputStateCreateInfo GridPipeline::buildVertexInputInfo() {
-    bindingDescriptions.clear();
-    attributeDescriptions.clear();
-
-    vk::VertexInputBindingDescription bindingDescription = {};
-    bindingDescription.binding = 0;
-    bindingDescription.stride = sizeof(Vertex);
-    bindingDescription.inputRate = vk::VertexInputRate::eVertex;
-    bindingDescriptions.push_back(bindingDescription);
-
-    vk::VertexInputAttributeDescription vertPositionAttrib = {};
-    vertPositionAttrib.binding = 0;
-    vertPositionAttrib.location = 0;
-    vertPositionAttrib.format = vk::Format::eR32G32B32Sfloat;
-    vertPositionAttrib.offset = offsetof(Vertex, pos);
-    attributeDescriptions.push_back(vertPositionAttrib);
-
-    vk::VertexInputAttributeDescription vertTexCoordAttrib = {};
-    vertTexCoordAttrib.binding = 0;
-    vertTexCoordAttrib.location = 1;
-    vertTexCoordAttrib.format = vk::Format::eR32G32Sfloat;
-    vertTexCoordAttrib.offset = offsetof(Vertex, texCoord);
-    attributeDescriptions.push_back(vertTexCoordAttrib);
-
-    vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
-    vertexInputInfo.sType = vk::StructureType::ePipelineVertexInputStateCreateInfo;
-    vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
-    vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
-    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
-    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
-    return vertexInputInfo;
-}
-
-
 vk::PipelineInputAssemblyStateCreateInfo GridPipeline::buildInputAssembly() {
     // Triangle list with no restart
     vk::PipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
@@ -64,12 +30,6 @@ vk::PipelineInputAssemblyStateCreateInfo GridPipeline::buildInputAssembly() {
 }
 
 vk::PipelineLayoutCreateInfo GridPipeline::buildPipelineLayout() {
-    // push constants
-    pushConstantRange = vk::PushConstantRange();
-    pushConstantRange->offset = 0;
-    pushConstantRange->size = sizeof(GridPush);
-    pushConstantRange->stageFlags = vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment;
-
     // Shader uniforms
     auto gridDescriptorSet = DescriptorSetBuilder(engine)
             .buffer(0, vk::ShaderStageFlagBits::eVertex, vk::DescriptorType::eUniformBuffer) // Binding 0 for Camera uniform buffer
@@ -84,41 +44,18 @@ vk::PipelineLayoutCreateInfo GridPipeline::buildPipelineLayout() {
     // Set up push constant range
     vk::PipelineLayoutCreateInfo layoutInfo;
     layoutInfo.sType = vk::StructureType::ePipelineLayoutCreateInfo;
-    layoutInfo.pushConstantRangeCount = 1;
-    layoutInfo.pPushConstantRanges = &pushConstantRange.value();
+    layoutInfo.pushConstantRangeCount = 0;
+    layoutInfo.pPushConstantRanges = {};
     layoutInfo.setLayoutCount = 1;
     layoutInfo.pSetLayouts = &descriptorSet->layout;
 
     return layoutInfo;
 }
 
-vk::PipelineColorBlendStateCreateInfo GridPipeline::buildColorBlendAttachment() {
-    attachments.clear();
-
-    vk::PipelineColorBlendAttachmentState colorBlendAttachment = {};
-    colorBlendAttachment.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
-    colorBlendAttachment.blendEnable = false;
-    colorBlendAttachment.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
-    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
-    colorBlendAttachment.colorBlendOp = vk::BlendOp::eAdd;
-    colorBlendAttachment.srcAlphaBlendFactor = vk::BlendFactor::eOne;
-    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eZero;
-    colorBlendAttachment.alphaBlendOp = vk::BlendOp::eAdd;
-
-    attachments.push_back(colorBlendAttachment);
-
-    vk::PipelineDepthStencilState depthAttachment = {};
-    depthAttachment.format = s->depthFormat;
-    depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-    depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    depthAttachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    vk::PipelineColorBlendStateCreateInfo ret{};
-    ret.attachmentCount = 1;
-    ret.pAttachments = attachments.data();
-    return ret;
+vk::PipelineVertexInputStateCreateInfo GridPipeline::buildVertexInputInfo() {
+    // no inputs needed
+    vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
+    vertexInputInfo.vertexAttributeDescriptionCount = 0;
+    vertexInputInfo.vertexAttributeDescriptionCount = 0;
+    return vertexInputInfo;
 }

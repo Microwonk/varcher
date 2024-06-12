@@ -3,10 +3,10 @@
 #include <glm/glm.hpp>
 #include "camera.h"
 
-struct Camera {
-    glm::mat4 u_view;
-    glm::mat4 u_proj;
-    glm::mat4 u_viewProj;
+struct ViewUniforms {
+    glm::mat4 view;
+    glm::mat4 proj;
+    glm::vec3 pos;
 };
 
 struct GridParams {

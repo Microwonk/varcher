@@ -4,21 +4,6 @@
 #include <engine/pipeline/descriptor_set.h>
 #include <engine/resource/shader_module.h>
 
-struct Vertex
-{
-    glm::vec3 pos;
-    glm::vec2 texCoord;
-};
-
-struct GridPush {
-    glm::vec2 offset;
-    // alignas very important, need memory alignment correct for vulkan spec
-    alignas(16) glm::mat4 model;
-    int numCells;
-    float thickness;
-    float scroll; // in [1, 2]
-};
-
 class GridPipeline : public APipeline {
 public:
     std::optional<DescriptorSet> descriptorSet;
@@ -31,13 +16,11 @@ protected:
 
     std::vector<vk::PipelineShaderStageCreateInfo> buildShaderStages() override;
 
-    vk::PipelineVertexInputStateCreateInfo buildVertexInputInfo() override;
-
     vk::PipelineInputAssemblyStateCreateInfo buildInputAssembly() override;
 
     vk::PipelineLayoutCreateInfo buildPipelineLayout() override;
 
-    vk::PipelineColorBlendStateCreateInfo buildColorBlendAttachment() override;
+    vk::PipelineVertexInputStateCreateInfo buildVertexInputInfo() override;
 
 private:
     std::optional<ShaderModule> vertexModule;

@@ -14,7 +14,7 @@ class GridStage : public AResource {
 private:
     std::unique_ptr<GridPipeline> _pipeline;
 
-    Camera _camera = {};
+    ViewUniforms _camera = {};
     std::unique_ptr<Buffer> _cameraBuffer;
 
     std::unique_ptr<Buffer> _quadVertBuffer;

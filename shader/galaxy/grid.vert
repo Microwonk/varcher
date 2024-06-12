@@ -1,34 +1,19 @@
 #version 450
 
-layout(location = 0) in vec3 a_pos;
-layout(location = 1) in vec2 a_texPos;
+// Shared set between most vertex shaders
+layout(set = 0, binding = 0) uniform ViewUniforms {
+    mat4 view;
+    mat4 proj;
+    vec3 pos;
+} view;
 
-//----------------------------------------------------------------------------//
-
-layout(location = 0) out vec2 o_texPos;
-
-//----------------------------------------------------------------------------//
-
-layout(set = 0, binding = 0) uniform Camera
-{
-    mat4 u_view;
-    mat4 u_proj;
-    mat4 u_viewProj;
-};
-
-layout(push_constant) uniform Params
-{
-    vec2 u_offset;
-    mat4 u_model;
-    int u_numCells;
-    float u_thickness;
-    float u_scroll; // in [1, 2]
-};
-
-//----------------------------------------------------------------------------//
-
-void main()
-{
-    o_texPos = a_texPos;
-    gl_Position = u_viewProj * u_model * vec4(a_pos, 1.0);
+// Grid position are in xy clipped space
+vec3 gridPlane[6] = vec3[](
+    vec3(1, 1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
+    vec3(-1, -1, 0), vec3(1, 1, 0), vec3(1, -1, 0)
+);
+// normal vertice projection
+void main() {
+    gl_Position = view.proj * view.view * vec4(gridPlane[gl_VertexIndex].xyz, 1.0);
 }
+
