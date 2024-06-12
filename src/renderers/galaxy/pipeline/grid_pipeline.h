@@ -10,6 +10,15 @@ struct Vertex
     glm::vec2 texCoord;
 };
 
+struct GridPush {
+    glm::vec2 offset;
+    // alignas very important, need memory alignment correct for vulkan spec
+    alignas(16) glm::mat4 model;
+    int numCells;
+    float thickness;
+    float scroll; // in [1, 2]
+};
+
 class GridPipeline : public APipeline {
 public:
     std::optional<DescriptorSet> descriptorSet;
@@ -28,7 +37,7 @@ protected:
 
     vk::PipelineLayoutCreateInfo buildPipelineLayout() override;
 
-//    vk::PipelineColorBlendStateCreateInfo buildColorBlendAttachment() override;
+    vk::PipelineColorBlendStateCreateInfo buildColorBlendAttachment() override;
 
 private:
     std::optional<ShaderModule> vertexModule;
@@ -36,4 +45,6 @@ private:
 
     std::vector<vk::VertexInputBindingDescription> bindingDescriptions;
     std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
+
+    std::vector<vk::PipelineColorBlendAttachmentState> attachments;
 };

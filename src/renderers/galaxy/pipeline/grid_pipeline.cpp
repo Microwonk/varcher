@@ -1,14 +1,5 @@
 #include "grid_pipeline.h"
 
-struct GridPush {
-    glm::vec2 offset;
-    // alignas very important, need memory alignment correct for vulkan spec
-    alignas(16) glm::mat4 model;
-    int numCells;
-    float thickness;
-    float scroll; // in [1, 2]
-};
-
 GridPipeline GridPipeline::build(const std::shared_ptr<Engine> &engine, const vk::RenderPass &pass) {
     GridPipeline pipeline(engine, pass);
     pipeline.buildAll();
@@ -101,19 +92,33 @@ vk::PipelineLayoutCreateInfo GridPipeline::buildPipelineLayout() {
     return layoutInfo;
 }
 
-//vk::PipelineColorBlendStateCreateInfo GridPipeline::buildColorBlendAttachment() {
-//    vk::PipelineColorBlendAttachmentState colorBlendAttachment = {};
-//    colorBlendAttachment.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
-//    colorBlendAttachment.blendEnable = false;
-//    colorBlendAttachment.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
-//    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
-//    colorBlendAttachment.colorBlendOp = vk::BlendOp::eAdd;
-//    colorBlendAttachment.srcAlphaBlendFactor = vk::BlendFactor::eOne;
-//    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eZero;
-//    colorBlendAttachment.alphaBlendOp = vk::BlendOp::eAdd;
-//
-//    vk::PipelineColorBlendStateCreateInfo ret{};
-//    ret.attachmentCount = 1;
-//    ret.pAttachments = &colorBlendAttachment;
-//    return ret;
-//}
+vk::PipelineColorBlendStateCreateInfo GridPipeline::buildColorBlendAttachment() {
+    attachments.clear();
+
+    vk::PipelineColorBlendAttachmentState colorBlendAttachment = {};
+    colorBlendAttachment.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
+    colorBlendAttachment.blendEnable = false;
+    colorBlendAttachment.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
+    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+    colorBlendAttachment.colorBlendOp = vk::BlendOp::eAdd;
+    colorBlendAttachment.srcAlphaBlendFactor = vk::BlendFactor::eOne;
+    colorBlendAttachment.dstAlphaBlendFactor = vk::BlendFactor::eZero;
+    colorBlendAttachment.alphaBlendOp = vk::BlendOp::eAdd;
+
+    attachments.push_back(colorBlendAttachment);
+
+    vk::PipelineDepthStencilState depthAttachment = {};
+    depthAttachment.format = s->depthFormat;
+    depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+    depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    depthAttachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+    vk::PipelineColorBlendStateCreateInfo ret{};
+    ret.attachmentCount = 1;
+    ret.pAttachments = attachments.data();
+    return ret;
+}
