@@ -2,7 +2,7 @@
 #include <filesystem>
 #include "app.h"
 
-#define STANDARD_RENDERER 'G'
+#define STANDARD_RENDERER 'F'
 
 inline auto printArchetypes() {
     std::cout << "Currently available archetypes are: ";
@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
     // fixes relative path issues when running from different fs path
     // (e.g.: ./varcher/debug/app/app T or .\varcher\debug\app\app.exe T)
     fs::path exe_path = fs::canonical(fs::path(argv[0])).parent_path();
+    // TODO just set exe_path the path of all base resources, not current path.
     fs::current_path(exe_path);
 
     char archetype;

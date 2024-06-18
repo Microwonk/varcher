@@ -13,9 +13,9 @@ class Engine;
 class APipeline : public AResource
 {
 public:
-    vk::Pipeline pipeline;
     vk::PipelineLayout layout;
 
+    vk::Pipeline pipeline;
 protected:
     DeletionQueue pipelineDeletionQueue;
 

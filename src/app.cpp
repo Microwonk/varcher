@@ -4,12 +4,14 @@
 #include "app.h"
 #include "renderers/triangle/triangle_renderer.h"
 #include "renderers/voxel/voxel_renderer.h"
+#include "renderers/fractal/fractal_renderer.h"
 
 static auto makeRenderer(char type, const std::shared_ptr<Engine>& engine) -> std::shared_ptr<ARenderer> {
     switch (type) {
         case 'T': return std::make_shared<TriangleRenderer>(engine);
         case 'V': return std::make_shared<VoxelRenderer>(engine);
         case 'G': return std::make_shared<GalaxyRenderer>(engine);
+        case 'F': return std::make_shared<FractalRenderer>(engine);
         default:
             fmt::println("'{}' is not a valid renderer, using default", type);
             return std::make_shared<TriangleRenderer>(engine);
