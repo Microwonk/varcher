@@ -17,8 +17,7 @@ std::vector<vk::PipelineShaderStageCreateInfo> FractalPipeline::buildShaderStage
             };
 }
 
-FractalPipeline FractalPipeline::build(const std::shared_ptr<Engine>& engine, const vk::RenderPass& pass)
-{
+FractalPipeline FractalPipeline::build(const std::shared_ptr<Engine> &engine, const vk::RenderPass &pass) {
     FractalPipeline pipeline(engine, pass);
     pipeline.buildAll();
     return pipeline;
@@ -27,7 +26,8 @@ FractalPipeline FractalPipeline::build(const std::shared_ptr<Engine>& engine, co
 vk::PipelineLayoutCreateInfo FractalPipeline::buildPipelineLayout() {
     // Shader uniforms
     auto desc = DescriptorSetBuilder(engine)
-            .buffer(0, vk::ShaderStageFlagBits::eFragment, vk::DescriptorType::eUniformBuffer) // Binding 0 for UBO (ShaderSettings)
+            .buffer(0, vk::ShaderStageFlagBits::eFragment,
+                    vk::DescriptorType::eUniformBuffer) // Binding 0 for UBO (ShaderSettings)
             .build("Fractal Descriptor Set");
     // Store descriptor set for later use
     descriptorSet = desc;
@@ -38,16 +38,13 @@ vk::PipelineLayoutCreateInfo FractalPipeline::buildPipelineLayout() {
 
     vk::PipelineLayoutCreateInfo layoutInfo;
     layoutInfo.sType = vk::StructureType::ePipelineLayoutCreateInfo;
-    layoutInfo.pushConstantRangeCount = 0;
-    layoutInfo.pPushConstantRanges = {};
     layoutInfo.setLayoutCount = 1;
     layoutInfo.pSetLayouts = &descriptorSet->layout;
 
     return layoutInfo;
 }
 
-vk::PipelineVertexInputStateCreateInfo FractalPipeline::buildVertexInputInfo()
-{
+vk::PipelineVertexInputStateCreateInfo FractalPipeline::buildVertexInputInfo() {
     vk::VertexInputBindingDescription bindingDescription = {};
     bindingDescription.binding = 0;
     bindingDescription.stride = sizeof(FractalVertex);
@@ -55,13 +52,13 @@ vk::PipelineVertexInputStateCreateInfo FractalPipeline::buildVertexInputInfo()
 
     bindingDescriptions.push_back(bindingDescription);
 
-    vk::VertexInputAttributeDescription vertPosAttrib {};
+    vk::VertexInputAttributeDescription vertPosAttrib{};
     vertPosAttrib.binding = 0;
     vertPosAttrib.location = 0;
     vertPosAttrib.format = vk::Format::eR32G32B32Sfloat;
     vertPosAttrib.offset = offsetof(FractalVertex, position);
 
-    vk::VertexInputAttributeDescription vertTexCoordAttrib {};
+    vk::VertexInputAttributeDescription vertTexCoordAttrib{};
     vertTexCoordAttrib.binding = 0;
     vertTexCoordAttrib.location = 1;
     vertTexCoordAttrib.format = vk::Format::eR32G32Sfloat;
@@ -79,8 +76,7 @@ vk::PipelineVertexInputStateCreateInfo FractalPipeline::buildVertexInputInfo()
     return vertexInputInfo;
 }
 
-vk::PipelineInputAssemblyStateCreateInfo FractalPipeline::buildInputAssembly()
-{
+vk::PipelineInputAssemblyStateCreateInfo FractalPipeline::buildInputAssembly() {
     // Triangle list with no restart
     vk::PipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
     inputAssemblyInfo.topology = vk::PrimitiveTopology::eTriangleList;

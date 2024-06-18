@@ -28,9 +28,6 @@ private:
                                     {{-1.0f, 1.0f, 0.0f}, {0.0f, 0.0f}}};
 
     glm::vec3 rotation = glm::vec3();
-    // glm::vec3 cameraPos = glm::vec3();
-    float zoom = 0;
-
     float _time = 0;
 
 public:

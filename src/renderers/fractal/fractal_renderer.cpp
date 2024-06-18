@@ -14,7 +14,7 @@ FractalRenderer::FractalRenderer(const std::shared_ptr<Engine>& engine) : ARende
     _p_settings = std::make_shared<PerformanceSettings>();
     _imguiRenderer = std::make_unique<ImguiRenderer>(engine, _windowRenderPass->renderPass);
 
-    _settingsBuffer = std::make_unique<Buffer>(engine, sizeof(ShaderSettings), vk::BufferUsageFlagBits::eUniformBuffer,
+    _settingsBuffer = std::make_unique<Buffer>(engine, sizeof(ShaderSettings), vk::BufferUsageFlagBits::eUniformBuffer | vk::BufferUsageFlagBits::eTransferDst,
                                               VMA_MEMORY_USAGE_CPU_TO_GPU, "Shader Settings Buffer");
     _settingsBuffer->copyData(&_settings, sizeof(ShaderSettings));
 
@@ -25,14 +25,15 @@ FractalRenderer::FractalRenderer(const std::shared_ptr<Engine>& engine) : ARende
     engine->recreationQueue->push(RecreationEventFlags::TARGET_RESIZE, [&]() {
         _pipeline->descriptorSet->initBuffer(0, _settingsBuffer->buffer, _settingsBuffer->size,
                                              vk::DescriptorType::eUniformBuffer);
+
         // _pipeline->descriptorSet->initBuffer();
 
         return [=](const std::shared_ptr<Engine> &) {};
     });
 
     engine->recreationQueue->push(RecreationEventFlags::SWAPCHAIN_RECREATE, [&]() {
-       _settings->viewportWidth = (float)engine->windowSize.x;
-       _settings->viewportHeight = (float)engine->windowSize.y;
+       _settings->viewportWidth = static_cast<float>(engine->windowSize.x);
+       _settings->viewportHeight = static_cast<float>(engine->windowSize.y);
        _settings->aspectRatio = (float)engine->windowSize.x / (float)engine->windowSize.y;
 
        return [=](const std::shared_ptr<Engine> &) {};
@@ -44,8 +45,6 @@ void FractalRenderer::update(float delta)
     _settings->view = glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
     _settings->view = glm::rotate(_settings->view, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    _settings->zoom = zoom;
-
     _time += delta;
     _imguiRenderer->beginFrame();
     RecreationEventFlags flags = PerformanceGui::draw(delta, _p_settings) | FractalSettingsGui::draw(_settings);
@@ -53,6 +52,8 @@ void FractalRenderer::update(float delta)
     if (flags & RecreationEventFlags::SWAPCHAIN_RECREATE) {
         engine->updatePresentMode(_p_settings->presentMode);
     }
+
+    _settingsBuffer->copyData(&_settings, sizeof(ShaderSettings));
 }
 
 void FractalRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uint32_t swapchainImage, uint32_t flightFrame)
@@ -61,7 +62,6 @@ void FractalRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uin
     // Start main renderpass
     vk::RenderPassBeginInfo renderpassInfo;
     renderpassInfo.renderPass = _windowRenderPass->renderPass;
-    renderpassInfo.renderArea.offset = vk::Offset2D(0, 0);
     renderpassInfo.renderArea.extent = vk::Extent2D(engine->windowSize.x, engine->windowSize.y);
     renderpassInfo.framebuffer = _windowFramebuffers[swapchainImage].framebuffer;
     renderpassInfo.clearValueCount = 1;
@@ -90,14 +90,14 @@ void FractalRenderer::recordCommands(const vk::CommandBuffer& commandBuffer, uin
     commandBuffer.setScissor(0, 1, &scissor);
 
     _settingsBuffer->copyData(&_settings, sizeof(ShaderSettings));
-    _pipeline->descriptorSet->writeBuffer(0, flightFrame, _settingsBuffer->buffer, sizeof(ShaderSettings), vk::DescriptorType::eUniformBuffer);
+    _pipeline->descriptorSet->writeBuffer(0, flightFrame, _settingsBuffer->buffer, sizeof(_settings), vk::DescriptorType::eUniformBuffer);
     commandBuffer.bindVertexBuffers(0, static_cast<vk::Buffer>(_vertexBuffer->buffer), static_cast<VkDeviceSize>(0ul));
     commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipeline->layout,
                                      0, 1,
                                      _pipeline->descriptorSet->getSet(flightFrame),
                                      0, nullptr);
 
-    commandBuffer.draw((uint32_t)vertices.size(), 1, 0, 0);
+    commandBuffer.draw(vertices.size(), 1, 0, 0);
     _imguiRenderer->draw(commandBuffer);
 
     // End main renderpass

@@ -3,17 +3,7 @@
 layout (location = 0) in vec3 inPos;
 layout (location = 1) in vec2 inUV;
 
-// layout (set = 0, binding = 0) uniform UBO {
-// 	mat4 projectionMatrix;
-// 	mat4 modelMatrix;
-// 	mat4 viewMatrix;
-// } ubo_;
-
 layout (location = 0) out vec2 outUV;
-
-out gl_PerVertex {
-    vec4 gl_Position;
-};
 
 
 void main() {

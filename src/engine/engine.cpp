@@ -89,7 +89,9 @@ void Engine::draw(float delta)
 
     // Begin command buffer
     vk::CommandBufferBeginInfo cmdBeginInfo;
-    cmdBeginInfo.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
+    // FIXME was:
+    // cmdBeginInfo.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
+    cmdBeginInfo.flags = vk::CommandBufferUsageFlagBits::eSimultaneousUse;
     commandBuffer.begin(cmdBeginInfo);
 
     // Record the commands

@@ -1,5 +1,4 @@
 #version 450
-precision highp float;
 
 layout(binding = 0) uniform UBO {
     // Ray marching
@@ -76,13 +75,13 @@ vec3 RotateZ(vec3 p, float a)
 //------------------------------------------
 // Ray marching settings
 //------------------------------------------
-const highp float ANTIALISING_SAMPLES = 1.0;
-const highp float MAX_STEPS = 256.0;
+const float ANTIALISING_SAMPLES = 1.0;
+const float MAX_STEPS = 256.0;
 highp float MIN_DIST = settings.minDist;
-const highp float MAX_DIST = 100.0;
+const float MAX_DIST = 100.0;
 // const float EPSILON = 0.0001;
 highp float EPSILON = MIN_DIST;
-const highp float IMAGE_PLANE = 1.0;
+const float IMAGE_PLANE = 1.0;
 
 vec3 dirLight1 = vec3(1.0, -1.0, -1.0);
 vec3 dirLight2 = vec3(-1.0, -1.0, -1.0);
@@ -540,7 +539,7 @@ vec3 scene(Ray ray) {
 void main() {
     vec3 col = vec3(0.0); // Accumulate color
 
-    // Normalized screen cordinates -> screen ray intersection cordinates
+    // Normalized screen coordinates -> screen ray intersection cordinates
     vec2 uv = inUV * 2.0 - 1.0;
 
     for(int i = 0; i < ANTIALISING_SAMPLES; i++) {
@@ -566,4 +565,6 @@ void main() {
     // col = smoothstep(0.0, 1.0, col); // contrast
     col = pow(col, vec3(.4545));	// gamma correction
     outFragColor = vec4(col, 1.0);
+    // TODO
+    //outFragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
