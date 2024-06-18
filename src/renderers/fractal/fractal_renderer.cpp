@@ -5,10 +5,12 @@
 #include "fractal_renderer.h"
 
 #include "engine/engine.h"
+#include "fractal_settings_gui.h"
 
 FractalRenderer::FractalRenderer(const std::shared_ptr<Engine>& engine) : ARenderer(engine)
 {
     _pipeline = std::make_unique<FractalPipeline>(FractalPipeline::build(engine, _windowRenderPass->renderPass));
+    _settings = std::make_shared<ShaderSettings>();
     _p_settings = std::make_shared<PerformanceSettings>();
     _imguiRenderer = std::make_unique<ImguiRenderer>(engine, _windowRenderPass->renderPass);
 
@@ -27,18 +29,26 @@ FractalRenderer::FractalRenderer(const std::shared_ptr<Engine>& engine) : ARende
 
         return [=](const std::shared_ptr<Engine> &) {};
     });
+
+    engine->recreationQueue->push(RecreationEventFlags::SWAPCHAIN_RECREATE, [&]() {
+       _settings->viewportWidth = (float)engine->windowSize.x;
+       _settings->viewportHeight = (float)engine->windowSize.y;
+       _settings->aspectRatio = (float)engine->windowSize.x / (float)engine->windowSize.y;
+
+       return [=](const std::shared_ptr<Engine> &) {};
+    });
 }
 
 void FractalRenderer::update(float delta)
 {
-    _settings.view = glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    _settings.view = glm::rotate(_settings.view, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    _settings->view = glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    _settings->view = glm::rotate(_settings->view, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    _settings.zoom = zoom;
+    _settings->zoom = zoom;
 
     _time += delta;
     _imguiRenderer->beginFrame();
-    RecreationEventFlags flags = PerformanceGui::draw(delta, _p_settings);
+    RecreationEventFlags flags = PerformanceGui::draw(delta, _p_settings) | FractalSettingsGui::draw(_settings);
 
     if (flags & RecreationEventFlags::SWAPCHAIN_RECREATE) {
         engine->updatePresentMode(_p_settings->presentMode);

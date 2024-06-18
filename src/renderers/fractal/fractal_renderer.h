@@ -14,7 +14,7 @@ private:
     std::shared_ptr<PerformanceSettings> _p_settings;
     std::shared_ptr<ImguiRenderer> _imguiRenderer;
 
-    ShaderSettings _settings = {};
+    std::shared_ptr<ShaderSettings> _settings;
     std::unique_ptr<Buffer> _settingsBuffer;
 
     std::unique_ptr<Buffer> _vertexBuffer;
